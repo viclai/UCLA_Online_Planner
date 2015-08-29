@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E1EA5497-67CA-45AA-86C6-3AFFFC2E532A}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UCLA_Student_Planner</RootNamespace>
+    <AssemblyName>UCLA_Student_Planner</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="addEntry.aspx" />
+    <Content Include="checkUsers.aspx" />
+    <Content Include="CSS\book.css" />
+    <Content Include="CSS\login.css" />
+    <Content Include="CSS\logout.css" />
+    <Content Include="editEntry.aspx" />
+    <Content Include="Extras\jGestures-license.txt" />
+    <Content Include="Extras\jgestures.min.js" />
+    <Content Include="Extras\jquery-ui-1.8.20.custom.min.js" />
+    <Content Include="Extras\jquery.min.1.7.js" />
+    <Content Include="Extras\jquery.mousewheel.min.js" />
+    <Content Include="Extras\modernizr.2.5.3.min.js" />
+    <Content Include="Favicon\browserconfig.xml" />
+    <Content Include="Favicon\favicon-114.png" />
+    <Content Include="Favicon\favicon-120.png" />
+    <Content Include="Favicon\favicon-144.png" />
+    <Content Include="Favicon\favicon-150.png" />
+    <Content Include="Favicon\favicon-152.png" />
+    <Content Include="Favicon\favicon-16.png" />
+    <Content Include="Favicon\favicon-160.png" />
+    <Content Include="Favicon\favicon-180.png" />
+    <Content Include="Favicon\favicon-192.png" />
+    <Content Include="Favicon\favicon-310.png" />
+    <Content Include="Favicon\favicon-32.png" />
+    <Content Include="Favicon\favicon-57.png" />
+    <Content Include="Favicon\favicon-60.png" />
+    <Content Include="Favicon\favicon-64.png" />
+    <Content Include="Favicon\favicon-70.png" />
+    <Content Include="Favicon\favicon-72.png" />
+    <Content Include="Favicon\favicon-76.png" />
+    <Content Include="Favicon\favicon-96.png" />
+    <Content Include="Favicon\favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\ajax-loader.gif" />
+    <Content Include="Images\back.jpg" />
+    <Content Include="Images\bruin_bear.jpg" />
+    <Content Include="Images\error_symbol.gif" />
+    <Content Include="Images\john_wooden.jpg" />
+    <Content Include="Images\login_cover.jpg" />
+    <Content Include="Images\MyUCLA.jpg" />
+    <Content Include="Images\planner_pic.gif" />
+    <Content Include="Images\registrar.gif" />
+    <Content Include="Images\royce_hall_back.jpg" />
+    <Content Include="Images\ucla.jpg" />
+    <Content Include="Images\ucla_planner_logo.gif" />
+    <Content Include="Images\ucla_text_logo.gif" />
+    <Content Include="Images\ucla_text_logo2.gif" />
+    <Content Include="index.aspx" />
+    <Content Include="lib\hash.js" />
+    <Content Include="lib\scissor.js" />
+    <Content Include="lib\scissor.min.js" />
+    <Content Include="lib\turn.html4.js" />
+    <Content Include="lib\turn.html4.min.js" />
+    <Content Include="lib\turn.js" />
+    <Content Include="lib\turn.min.js" />
+    <Content Include="lib\zoom.js" />
+    <Content Include="lib\zoom.min.js" />
+    <Content Include="login.aspx" />
+    <Content Include="logoff.aspx" />
+    <Content Include="Scripts\ajax.js" />
+    <Content Include="Scripts\autoLogoff.js" />
+    <Content Include="Scripts\pages.js" />
+    <Content Include="SessionCheck.aspx" />
+    <Content Include="SessionExpired.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="addEntry.aspx.cs">
+      <DependentUpon>addEntry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="addEntry.aspx.designer.cs">
+      <DependentUpon>addEntry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="checkUsers.aspx.cs">
+      <DependentUpon>checkUsers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="checkUsers.aspx.designer.cs">
+      <DependentUpon>checkUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="editEntry.aspx.cs">
+      <DependentUpon>editEntry.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="editEntry.aspx.designer.cs">
+      <DependentUpon>editEntry.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="login.aspx.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="login.aspx.designer.cs">
+      <DependentUpon>login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="logoff.aspx.cs">
+      <DependentUpon>logoff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="logoff.aspx.designer.cs">
+      <DependentUpon>logoff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionCheck.aspx.cs">
+      <DependentUpon>SessionCheck.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SessionCheck.aspx.designer.cs">
+      <DependentUpon>SessionCheck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SessionExpired.aspx.cs">
+      <DependentUpon>SessionExpired.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SessionExpired.aspx.designer.cs">
+      <DependentUpon>SessionExpired.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Favicon\VL-Logo.pdn" />
+    <Content Include="lib\compress.sh" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>58331</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49622/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

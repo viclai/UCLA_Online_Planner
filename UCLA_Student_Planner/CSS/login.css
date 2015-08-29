@@ -1,0 +1,204 @@
+﻿body {
+    background-image: url("../Images/login_cover.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+h1, h2 {
+    margin: 1px;
+}
+
+a:visited {
+    color: blue;
+}
+
+a:hover {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+#linksTitle {
+    font-family: 'Comic Sans MS';
+    color: #E6C200;
+    font-weight: bold;  
+}
+
+#close {
+    position: absolute;
+    background: black;
+    color: white;
+    right: -15px;
+    top: -15px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-size: 8px;
+    font-weight: bold;
+    font-family: 'Arial Black', Arial, sans-serif;
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 #000;
+}
+
+#close:hover {
+    background: red;
+}
+
+#hover {
+    position: fixed;
+    background: #000;
+    width: 104%;
+    height: 107%;
+    opacity: .3;
+    top: -14px;
+    left: -29px;
+    z-index: 9990;
+}
+
+#logPopup, #signUpPopup {
+    position: absolute;
+    width: 600px;
+    height: 180px;
+    background: #E0F3FF;
+    left: 50%;
+    top: 50%;
+    border-radius: 5px;
+    padding: 60px 0;
+    margin-left: -320px; /* width/2 + padding-left */
+    margin-top: -150px; /* height/2 + padding-top */
+    text-align: center;
+    box-shadow: 0 0 10px 0 #000;
+    z-index: 9999;
+}
+
+#signUpPopup {
+    font-weight: bold;
+    font-size: 25px;
+}
+
+#UA_Close {
+    border-radius: 15px;
+    padding: 10px 40px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.roundBox {
+    border-radius: 25px;
+    padding: 10px 40px;
+    width: 300px;
+    font-size: 20px;
+}
+
+#loginButton, #signUpButton {
+    border-radius: 25px;
+    padding: 20px 50px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+#loginButton {
+    background-color: gold;
+    border: 2px solid black;
+}
+
+#loginButton:hover, #signUpButton:hover {
+    background-color: #E0F3FF;
+}
+
+#signUpButton {
+    background-color: #D4D4BF;
+    border: 2px solid #0000FF;
+}
+
+#signinButton {
+    background-color: gold;
+    cursor: pointer;
+    border-radius: 25px;
+    font-size:20px;
+}
+
+#signinButton:hover {
+    font-weight: bold;
+}
+
+#signInError {
+    color: red;
+}
+
+#topBar {
+    text-align: right;
+}
+
+.tabular {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+
+.transBox {
+    text-align: left;
+    width: 30%;
+    background-color: #ffffff;
+    border: 1px solid black;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+    border-radius: 25px;
+    padding: 10px 10px;
+}
+
+#empty {
+    width: 30%;
+    text-align: center;
+}
+
+#plannerPic {
+    -moz-box-shadow:    3px 3px 5px 6px #292929;
+    -webkit-box-shadow: 3px 3px 5px 6px #292929;
+    box-shadow:         3px 3px 5px 6px #292929;
+    -ms-transform: skew(-15deg); /* IE 9 */
+    -webkit-transform: skew(-15deg); /* Safari */
+    transform: skew(-15deg);
+}
+
+#pgTitleSect {
+    text-align: right;
+}
+
+#pgTitle {
+    color: gold;
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', Georgia;
+    font-size: 50px;
+}
+
+#uclaText {
+    font-size: 180px;
+    text-align: center;
+}
+
+#uclaLogo {
+    border-radius: 25px;
+    padding: 10px 10px;
+    background-color: #FFCC66;
+}
+
+#copyInfo {
+    background-color: gray;
+    color: white;
+    text-align: center;
+}
+
+#loadingImg, #signInError, #hover, #logPopup, #signUpPopup {
+    display: none;
+}
+
+#dateWeek {
+    font-weight: bold;
+    color: blue;
+    font-size: 20px;
+}

@@ -1,0 +1,296 @@
+﻿h1, h2 {
+    text-align: center;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+p {
+    text-align: left;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+
+body, textarea {
+    background-color: #E0F3FF;
+}
+
+body {
+	overflow-y: auto;
+    overflow-x: auto;
+    text-align: center;
+    background-image: url("../Images/royce_hall_back.jpg");
+    background-size: 100%;
+    background-repeat: no-repeat;
+} 
+
+textarea {
+    resize: none;
+    color: black;
+}
+
+.rightPg div[ignore="1"], .pgContent div[ignore="1"] {
+    border-style: dotted;
+    border-width: thin;
+    border-color: black;
+    border-collapse: collapse;
+    height: 200px; /* 4 sections/page = 25% */
+}
+
+.pgContain {
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    display: -moz-flex; /* Firefox */
+    display: -ms-flexbox; /* IE 10*/
+    width: 100%;
+}
+
+.stripLeft {
+    font-size: large;
+    position: relative;
+    text-align: center;
+    width: 10%;
+    height: 100%;
+    top: 710px;
+    right: -5px;
+    white-space: nowrap;
+    -ms-transform: rotate(270deg); /* IE 9 */
+    -moz-transform: rotate(270deg); /* Firefox */
+    -webkit-transform: rotate(270deg); /* Safari and Chrome */
+    -o-transform: rotate(270deg); /* Opera */
+}
+
+.pgContent {
+    flex-grow: 1;
+    -webkit-flex-grow: 1;
+    -moz-flex-grow: 1;
+}
+
+td {
+    vertical-align: top;
+}
+
+.date {
+    cursor: pointer;
+}
+
+.weekly-notes::-webkit-scrollbar, .entry-box::-webkit-scrollbar {
+    width: 12px;
+}
+
+.weekly-notes::-webkit-scrollbar-track, .entry-box::-webkit-scrollbar-track {
+    background-color: #008AB8;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+ 
+.weekly-notes::-webkit-scrollbar-thumb, .entry-box::-webkit-scrollbar-thumb {
+    background-color: gold;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);  
+}
+
+.weekly-notes, .entry-box {
+    overflow-y: auto;
+    border-style: dashed;
+    border-color: #FFFFFF;
+}
+
+.weekly-notes {
+    width: 465px; /* Orig: 480px */
+    height: 80px;
+    margin: 5px;
+}
+
+.entry-box {
+    width: 415px; /* Orig: 430px */
+    height: 100px;
+}
+
+img {
+    align-content: center;
+}
+
+#last {
+    text-align: center;
+}
+
+button {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.events-center, .button-center {
+    margin: 0 auto;
+    display: table;
+}
+
+.button-center {
+    display: inline-block;
+    margin: 0 20px 0 0;
+}
+
+.buttonCtrls {
+    text-align: center;
+    border: none;
+}
+
+.button-center {
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: gold;
+    color: blue;
+    cursor: pointer;
+}
+
+.button-center:hover {
+    font-weight: bold;
+}
+
+.flipbook-viewport {
+    overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+
+.flipbook-viewport .container {
+    position: relative;
+	margin: auto;
+}
+
+.flipbook-viewport .flipbook {
+	width: 1100px;
+	height: 800px;
+}
+
+.flipbook-viewport .page {
+	width: 550px;
+	height: 800px;
+    color: #E6E62E;
+    background-image: url("../Images/back.jpg");
+    background-color: #008AB8;
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+
+    /* Problem: Using built-in borders omits some borders. */
+    /*
+    border-style:solid;
+    border-width:medium;
+    border-color:#E6E62E;
+    */
+}
+
+.flipbook .page {
+	-webkit-box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	-ms-box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	-o-box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.flipbook-viewport .page img {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	margin: 0;
+}
+
+.flipbook-viewport .shadow {
+	-webkit-transition: -webkit-box-shadow 0.5s;
+	-moz-transition: -moz-box-shadow 0.5s;
+	-o-transition: -webkit-box-shadow 0.5s;
+	-ms-transition: -ms-box-shadow 0.5s;
+
+	-webkit-box-shadow: 0 0 20px #ccc;
+	-moz-box-shadow: 0 0 20px #ccc;
+	-o-box-shadow: 0 0 20px #ccc;
+	-ms-box-shadow: 0 0 20px #ccc;
+	box-shadow: 0 0 20px #ccc;
+}
+
+#hover, #Error_Page_Flip, #tips {
+    display: none;
+}
+
+#hover {
+    position: fixed;
+    background: #000;
+    width: 104%;
+    height: 107%;
+    opacity: .3;
+    top: -14px;
+    left: -29px;
+    z-index: 9990;
+}
+
+#Error_Page_Flip {
+    position: absolute;
+    width: 600px;
+    height: 40px; /* Orig: 180px */
+    background: #E0F3FF;
+    left: 50%;
+    top: 50%;
+    border-radius: 5px;
+    padding: 60px 0;
+    margin-left: -320px;
+    margin-top: -90px;
+    text-align: center;
+    box-shadow: 0 0 10px 0 #000;
+    z-index: 9999;
+
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#errorTab {
+    display: flex;
+}
+
+#errorSect {
+    flex-grow: 1;
+}
+
+#errorMsg {
+    flex-grow: 2;
+}
+
+#tools {
+    text-align: left;
+}
+
+#signOutButton, #tipsButton {
+    border-radius: 5px;
+    padding: 5px 10px;
+    background-color: blue;
+    color: gold;
+    cursor: pointer;
+}
+
+#tips {
+    position: absolute;
+    width: 600px;
+    height: 300px;
+    background: #E0F3FF;
+    left: 50%;
+    top: 50%;
+    border-radius: 5px;
+    padding: 30px 10px;
+    margin-left: -320px;
+    margin-top: -150px;
+    box-shadow: 0 0 10px 0 #000;
+    z-index: 9999;
+
+    font-weight: bold;
+    font-size: 20px;
+    text-align: left;
+}
+
+#tipsHead {
+    font-size: 20px;
+}
