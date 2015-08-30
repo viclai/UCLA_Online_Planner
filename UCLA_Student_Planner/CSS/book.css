@@ -294,3 +294,9 @@ button {
 #tipsHead {
     font-size: 20px;
 }
+
+.alert {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
