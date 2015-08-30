@@ -120,7 +120,6 @@
     <Content Include="Scripts\ajax.js" />
     <Content Include="Scripts\autoLogoff.js" />
     <Content Include="Scripts\pages.js" />
-    <Content Include="SessionCheck.aspx" />
     <Content Include="SessionExpired.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -173,13 +172,6 @@
       <DependentUpon>logoff.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SessionCheck.aspx.cs">
-      <DependentUpon>SessionCheck.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="SessionCheck.aspx.designer.cs">
-      <DependentUpon>SessionCheck.aspx</DependentUpon>
-    </Compile>
     <Compile Include="SessionExpired.aspx.cs">
       <DependentUpon>SessionExpired.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

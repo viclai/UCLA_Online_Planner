@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 
 using System.Data.SqlClient;
 using System.Collections;
+using System.Configuration;
 
 namespace UCLA_Student_Planner
 {
@@ -37,9 +38,8 @@ namespace UCLA_Student_Planner
             KeyValuePair<string, string>[] entryMap;
             try
             {
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString =
-                    "Data Source=(localdb)\\v11.0;Initial Catalog=StudentEntries;Integrated Security=True";
+                SqlConnection con =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["AppHConnection"].ConnectionString);
                 con.Open();
 
                 /* Get a count of how many entries of that particular date were originally in the database */
@@ -77,7 +77,7 @@ namespace UCLA_Student_Planner
                         if (entryMap.Length > i && entries[i] != entryMap[i].Value)
                         {
                             using (SqlCommand updateCmd =
-                                new SqlCommand("UPDATE DayEntries SET Entry = @newContent, [Date Modified] = GETDATE() WHERE [User ID] = @user AND ID =" +
+                                new SqlCommand("UPDATE DayEntries SET Entry = @newContent WHERE [User ID] = @user AND ID =" +
                                     entryMap[i].Key, con))
                             {
                                 updateCmd.Parameters.AddWithValue("@user", userID);
@@ -144,7 +144,7 @@ namespace UCLA_Student_Planner
                         if (entryMap.Length > i && entries[i] != entryMap[i].Value)
                         {
                             using (SqlCommand updateCmd =
-                                new SqlCommand("UPDATE WeekEntries SET Entry = @newContent, [Date Modified] = GETDATE() WHERE [User ID] = @user AND ID =" +
+                                new SqlCommand("UPDATE WeekEntries SET Entry = @newContent WHERE [User ID] = @user AND ID =" +
                                     entryMap[i].Key, con))
                             {
                                 updateCmd.Parameters.AddWithValue("@user", userID);

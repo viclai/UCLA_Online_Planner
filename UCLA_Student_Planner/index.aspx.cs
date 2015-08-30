@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Configuration;
 
 namespace UCLA_Student_Planner
 {
@@ -284,9 +285,8 @@ namespace UCLA_Student_Planner
             
             try
             {
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString =
-                    "Data Source=(localdb)\\v11.0;Initial Catalog=StudentEntries;Integrated Security=True";
+                SqlConnection con =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["AppHConnection"].ConnectionString);
                 con.Open();
 
                 using (SqlCommand cmd = 
@@ -331,9 +331,8 @@ namespace UCLA_Student_Planner
             
             try
             {
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString =
-                    "Data Source=(localdb)\\v11.0;Initial Catalog=StudentEntries;Integrated Security=True";
+                SqlConnection con =
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["AppHConnection"].ConnectionString);
                 con.Open();
 
                 using (SqlCommand cmd =

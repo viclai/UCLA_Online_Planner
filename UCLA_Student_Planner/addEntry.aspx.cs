@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace UCLA_Student_Planner
 {
@@ -32,9 +33,8 @@ namespace UCLA_Student_Planner
         {
             try
             {
-                SqlConnection con = new SqlConnection();
-                con.ConnectionString =
-                    "Data Source=(localdb)\\v11.0;Initial Catalog=StudentEntries;Integrated Security=True";
+                SqlConnection con = 
+                    new SqlConnection(ConfigurationManager.ConnectionStrings["AppHConnection"].ConnectionString);
                 con.Open();
 
                 if (type == "D")
