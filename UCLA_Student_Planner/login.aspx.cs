@@ -22,19 +22,38 @@ namespace UCLA_Student_Planner
         {
             WebClient client = new WebClient();
             string str = client.DownloadString("http://my.ucla.edu/");
+
+            dateWeek.InnerHtml += extractWeek(str) + " | ";
+            dateWeek.InnerHtml += extractDate(str);
+
+            //DateTime today = DateTime.Now;
+            //dateWeek.InnerHtml += today.ToString("D");
+        }
+
+        private string extractWeek(string urlstring)
+        {
             string pattern =
                 "<li\\s+id=\"nav-li-logout\">\\s*[^<]+\\s*</li>";
             Regex rgx = new Regex(pattern);
             string subpattern = ">(\\r\\n)?[a-zA-Z0-9 ]+\\s*<";
             Regex innerRgx = new Regex(subpattern);
-            string cont = innerRgx.Matches(rgx.Matches(str)[0].Value)[0].ToString();
+            string cont = innerRgx.Matches(rgx.Matches(urlstring)[0].Value)[0].ToString();
             Regex sRgx = new Regex("\\s+");
             cont = sRgx.Replace(cont, " ");
             string contSub = cont.Substring(2, cont.Length - 4); // UCLA Week
-            dateWeek.InnerHtml += contSub + " | ";
+            return contSub;
+        }
 
-            DateTime today = DateTime.Now;
-            dateWeek.InnerHtml += today.ToString("D");
+        private string extractDate(string urlstring)
+        {
+            string pattern =
+                "<li\\s+id=\"nav-li-date\">\\s*<span class=\"hide-small\">[^<]+\\s*</span>";
+            Regex rgx = new Regex(pattern);
+            string subpattern = ">[a-zA-Z0-9, ]+<";
+            Regex innerRgx = new Regex(subpattern);
+            string cont = innerRgx.Matches(rgx.Matches(urlstring)[0].Value)[0].ToString();
+            string date = cont.Substring(1, cont.Length - 2);
+            return date;
         }
 
         protected void signinButton_Click(object sender, EventArgs e)
