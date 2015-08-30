@@ -33,7 +33,7 @@ namespace UCLA_Student_Planner
             string contSub = cont.Substring(2, cont.Length - 4); // UCLA Week
             dateWeek.InnerHtml += contSub + " | ";
 
-            DateTime today = DateTime.Today;
+            DateTime today = DateTime.Now;
             dateWeek.InnerHtml += today.ToString("D");
         }
 
