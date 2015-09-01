@@ -58,6 +58,8 @@
                         next.value = "next";
                         fm.appendChild(next);
 
+                        document.body.appendChild(fm);
+
                         fm.submit();
                     }
                     else {
