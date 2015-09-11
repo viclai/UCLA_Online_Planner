@@ -1,8 +1,9 @@
 ﻿body {
-    background-image: url("../Images/john_wooden.jpg"); 
-    background-size: 100%; 
-    background-repeat: no-repeat;
-    background-position: center;
+    background:
+        url("../Images/john_wooden.jpg")
+        center center / 100%
+        no-repeat
+        fixed;
 }
 
 #logoSect {

@@ -1,7 +1,9 @@
 ﻿body {
-    background-image: url("../Images/login_cover.jpg");
-    background-size: 100%;
-    background-repeat: no-repeat;
+    background:
+        url("../Images/login_cover.jpg")
+        0% 0% / 100%
+        no-repeat
+        fixed;
 }
 
 h1, h2 {

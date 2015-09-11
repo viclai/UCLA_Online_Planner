@@ -21,9 +21,11 @@ body {
 	overflow-y: auto;
     overflow-x: auto;
     text-align: center;
-    background-image: url("../Images/royce_hall_back.jpg");
-    background-size: 100%;
-    background-repeat: no-repeat;
+    background:
+        url("../Images/royce_hall_back.jpg")
+        0% 0% / 100%
+        no-repeat
+        fixed;
 } 
 
 textarea {

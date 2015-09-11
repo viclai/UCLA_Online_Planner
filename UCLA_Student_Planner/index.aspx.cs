@@ -46,19 +46,21 @@ namespace UCLA_Student_Planner
                 new KeyValuePair<string, int>("FALL QUARTER - ZERO WEEK", 1), 
                 new KeyValuePair<string, int>("FALL QUARTER - WEEK ", 10),
                 new KeyValuePair<string, int>("FINALS WEEK", 1),
-                new KeyValuePair<string, int>("WINTER BREAK", -1), // Unknown
+                new KeyValuePair<string, int>("WINTER BREAK", -1), // Unknown - get from registrar page
                 new KeyValuePair<string, int>("WINTER QUARTER - WEEK ", 10),
                 new KeyValuePair<string, int>("FINALS WEEK", 1),
-                new KeyValuePair<string, int>("SPRING BREAK", -1), // Unknown
+                new KeyValuePair<string, int>("SPRING BREAK", -1), // Unknown - get from registrar page
                 new KeyValuePair<string, int>("SPRING QUARTER - WEEK ", 10),
                 new KeyValuePair<string, int>("FINALS WEEK", 1),
-                new KeyValuePair<string, int>("SUMMER", 0), // Unknown
+                new KeyValuePair<string, int>("SUMMER", 0), // Unknown - get from registrar page
                 new KeyValuePair<string, int>("FALL QUARTER - ZERO WEEK", 1),
             };
 
             WebClient client = new WebClient();
             string curYear = DateTime.Now.Year.ToString();
             string curMonth = DateTime.Now.Month.ToString();
+
+            // Get calendar from registrar page based on the current academic year.
             string curAcademYear = curSchoolYear(curMonth, curYear);
             startEndDates.Value += curAcademYear + "|";
             string htmlCurAcademYear =
@@ -76,17 +78,21 @@ namespace UCLA_Student_Planner
             /* Load events (including start date) into hidden fields. */
             foreach (Match match in rgx1.Matches(htmlCurAcademYear))
             {
-                string subpattern = ">[A-Z][^<]+<";
-                Regex innerRgx = new Regex(subpattern);
+                string contentPattern = ">[A-Z][^<]+<";
+                Regex innerRgx = new Regex(contentPattern);
                 string evt = innerRgx.Matches(match.Value)[0].ToString();
                 int evtLen = evt.Length;
                 string date = innerRgx.Matches(match.Value)[1].ToString();
                 int dateLen = date.Length;
 
-                eventsToDates.Value += evt.Substring(1, evtLen - 2) + "|" + date.Substring(1, dateLen - 2) + ";";
-                if (evt.Substring(1, evtLen - 2) == "Quarter ends") // For calulcating winter/spring break intervals
+                string eventStr = evt.Substring(1, evtLen - 2);
+                string dateStr = date.Substring(1, dateLen - 2);
+
+                eventsToDates.Value += eventStr + "|" + dateStr + ";";
+                if (eventStr == "Quarter ends") // For calulcating winter/spring break intervals
                 {
-                    string[] dateContent = date.Substring(1, dateLen - 2).Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] dateContent = 
+                        dateStr.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     int month = monthNo(dateContent[1]);
                     int year;
                     if (month >= 9)
@@ -96,16 +102,17 @@ namespace UCLA_Student_Planner
                     int dateNo = Convert.ToInt32(dateContent[2]);
                     breakDates[0] = new DateTime(year, month, dateNo);
                 }
-                if (isStart && evt.Substring(1, evtLen - 2) == "Quarter begins")
+                if (isStart && eventStr == "Quarter begins")
                 {
                     startEndDates.Value += date.Substring(1, dateLen - 2) + "|";
                     academYearStart = date.Substring(1, dateLen - 2);
                 }
-                if (isStart && evt.Substring(1, evtLen - 2) == "Instruction begins")
+                if (isStart && eventStr == "Instruction begins")
                     isStart = false;
-                else if (!isStart && evt.Substring(1, evtLen - 2) == "Instruction begins") // For calulcating winter/spring break intervals
+                else if (!isStart && eventStr == "Instruction begins") // For calulcating winter/spring break intervals
                 {
-                    string[] dateContent = date.Substring(1, dateLen - 2).Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] dateContent = 
+                        dateStr.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     int month = monthNo(dateContent[1]);
                     int year;
                     if (month >= 9)
@@ -121,7 +128,7 @@ namespace UCLA_Student_Planner
             }
             breakI = 0;
 
-            /* Load end date into hidden field. */
+            /* Load end date (by getting date of Fall Quarter beginning next year) into hidden field. */
             string nextAcademYear = (Convert.ToInt32(curAcademYear) + 1).ToString();
             WebClient client2 = new WebClient();
             string htmlnextAcademYear =
@@ -133,42 +140,45 @@ namespace UCLA_Student_Planner
                 "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"340\">(<span class=\"red\">)?[^<]+(</span>)?</td>\\s*" +
                 "</tr>";
             Regex rgx2 = new Regex(pattern2);
-            string datePattern = "Monday, [^<]+";
+            string datePattern = "Monday, [^<]+"; // ASSUMPTION: Quarter begins on a Monday
             Regex subRgx = new Regex(datePattern);
             string endDate = subRgx.Match(rgx2.Match(htmlnextAcademYear).ToString()).ToString();
             startEndDates.Value += endDate;
             academYearEnd = endDate;
 
             /* Calculate number of weeks of summer */
-            string[] academYearStartContent = academYearStart.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] academYearStartContent = 
+                academYearStart.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int startMonth = monthNo(academYearStartContent[1]);
             int startYear = Convert.ToInt32(curAcademYear);
             int startDateNo = Convert.ToInt32(academYearStartContent[2]);
             breakDates[0] = new DateTime(startYear, startMonth, startDateNo);
 
-            string[] academYearEndContent = academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] academYearEndContent = 
+                academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int endMonth = monthNo(academYearEndContent[1]);
             int endYear = Convert.ToInt32(curAcademYear) + 1;
             int endDateNo = Convert.ToInt32(academYearEndContent[2]);
             breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
             int totalWeeks = nWeeks(breakDates[0], breakDates[1]);
 
-            int weeksTaken = 0;
-            int summerIndex = -1; ;
+            int weeksTaken = 0; // Number of non-summer weeks
+            int summerIndex = -1;
             for (int i = 0; i < weekContent.Length; i++)
             {
                 if (weekContent[i].Key == "SUMMER")
                     summerIndex = i;
-                if (weekContent[i].Value == -1)
+                if (weekContent[i].Value == -1) // Record number of weeks for spring break and winter break
                 {
                     weekContent[i] = new KeyValuePair<string,int>(weekContent[i].Key, breaks[breakI]);
                     breakI++;
                 }
                 weeksTaken += weekContent[i].Value;
             }
+            // Calculate number of weeks of summer by taking difference of total number of weeks and non-summer weeks
             weekContent[summerIndex] = new KeyValuePair<string, int>(weekContent[summerIndex].Key, totalWeeks - weeksTaken);
 
-            /* Load week content into hidden field. */
+            /* Load week content (rotated text of planner) into hidden field. */
             for (int i = 0; i < weekContent.Length; i++)
             {
                 if (weekContent[i].Value == 10)
@@ -227,7 +237,7 @@ namespace UCLA_Student_Planner
                 case "8":
                     curAcademYear = (Convert.ToInt32(curAcademYear) - 1).ToString();
                     break;
-                case "9": // Assumption: Academic year always starts in September
+                case "9": // ASSUMPTION: Academic year always starts in September
                     WebClient client = new WebClient();
                     string reply = 
                         client.DownloadString("http://www.registrar.ucla.edu/calendar/acadcal" + 
@@ -238,19 +248,21 @@ namespace UCLA_Student_Planner
                         "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"340\">[^<]+</td>\\s*" +
                         "</tr>";
                     Regex rgx = new Regex(pattern);
-                    Match match = rgx.Match(reply);
+                    Match fallQuarterBegins = rgx.Match(reply);
 
                     string subpattern = "September \\d+";
                     Regex rgx2 = new Regex(subpattern);
-                    Match date = rgx2.Match(match.Value);
+                    Match date = rgx2.Match(fallQuarterBegins.Value);
                     int dateLen = date.Value.Length;
-                    string now = DateTime.Now.Date.ToString("d");
+                    string now = DateTime.Now.Date.ToString("d"); // Format: mm/dd/yyyy
                     int firstSlash = now.IndexOf('/', 0);
                     int secondSlash = now.IndexOf('/', firstSlash + 1);
-                    string parsedDate = now.Substring(firstSlash + 1, secondSlash - firstSlash - 1);
+                    string parsedDate = now.Substring(firstSlash + 1, secondSlash - firstSlash - 1); // Get dd from mm/dd/yyyy
 
-                    int test = Convert.ToInt32(" 2");
-                    if (Convert.ToInt32(parsedDate) < Convert.ToInt32(date.Value.Substring(dateLen - 2, 2)))
+                    // Compare today's date with date of Fall Quarter beginning
+                    int curDate = Convert.ToInt32(parsedDate);
+                    int schoolStartDate = Convert.ToInt32(date.Value.Substring(dateLen - 2, 2));
+                    if (curDate < schoolStartDate)
                         curAcademYear = (Convert.ToInt32(curAcademYear) - 1).ToString();
                     break;
                 case "10":
@@ -319,7 +331,7 @@ namespace UCLA_Student_Planner
             }
             catch(Exception ex)
             {
-                string msg = "Error: ";
+                string msg = "loadDayEntries() Error: ";
                 msg += ex.Message;
                 System.Diagnostics.Debug.WriteLine(msg);
             }
@@ -354,7 +366,7 @@ namespace UCLA_Student_Planner
             }
             catch (Exception ex)
             {
-                string msg = "Error: ";
+                string msg = "loadWeekEntries() Error: ";
                 msg += ex.Message;
                 System.Diagnostics.Debug.WriteLine(msg);
             }
