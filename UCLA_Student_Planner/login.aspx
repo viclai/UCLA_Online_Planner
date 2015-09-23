@@ -104,7 +104,7 @@
         <hr />
         <form id="form1" runat="server" method="post">
             <div>
-                <asp:TextBox ID="userText" runat="server" Placeholder="Username" CssClass="roundBox"></asp:TextBox>
+                <asp:TextBox ID="userText" runat="server" Placeholder="Username" CssClass="roundBox" AutoCompleteType="Disabled"></asp:TextBox>
                 <br />
                 <asp:TextBox ID="passwordText" runat="server" Placeholder="Password" TextMode="Password" CssClass="roundBox">
                 </asp:TextBox>

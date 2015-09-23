@@ -601,7 +601,9 @@ function loadBook(pgNum) {
     $(document).keydown(function (e) {
 
         var previous = 37, next = 39;
-
+        if (e.target.nodeName == 'TEXTAREA' && (e.keyCode == previous || e.keyCode == next))
+            return;
+         
         switch (e.keyCode) {
             case previous:
                 // left arrow
