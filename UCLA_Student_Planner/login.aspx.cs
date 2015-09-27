@@ -35,7 +35,7 @@ namespace UCLA_Student_Planner
             string pattern =
                 "<li\\s+id=\"nav-li-logout\">\\s*[^<]+\\s*</li>";
             Regex rgx = new Regex(pattern);
-            string subpattern = ">(\\r\\n)?[a-zA-Z0-9 ]+\\s*<";
+            string subpattern = ">(\\r\\n)?\\s*[a-zA-Z0-9\\- ]+(\\r\\n)?\\s*<"; 
             Regex innerRgx = new Regex(subpattern);
             string cont = innerRgx.Matches(rgx.Matches(urlstring)[0].Value)[0].ToString();
             Regex sRgx = new Regex("\\s+");
