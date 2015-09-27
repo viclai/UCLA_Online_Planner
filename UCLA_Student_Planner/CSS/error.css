@@ -1,0 +1,19 @@
+﻿body {
+    background:
+        url("../Images/maintenance.jpg")
+        center center / 100%
+        no-repeat
+        fixed;
+}
+
+#errMsg {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+    border: 2px solid gold;
+    border-radius: 25px;
+    padding: 10px 10px;
+    background-color: white;
+}
+
+

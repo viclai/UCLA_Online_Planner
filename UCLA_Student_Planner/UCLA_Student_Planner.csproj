@@ -61,9 +61,11 @@
     <Content Include="addEntry.aspx" />
     <Content Include="checkUsers.aspx" />
     <Content Include="CSS\book.css" />
+    <Content Include="CSS\error.css" />
     <Content Include="CSS\login.css" />
     <Content Include="CSS\logout.css" />
     <Content Include="editEntry.aspx" />
+    <Content Include="error.html" />
     <Content Include="Extras\jGestures-license.txt" />
     <Content Include="Extras\jgestures.min.js" />
     <Content Include="Extras\jquery-ui-1.8.20.custom.min.js" />
@@ -97,6 +99,7 @@
     <Content Include="Images\error_symbol.gif" />
     <Content Include="Images\john_wooden.jpg" />
     <Content Include="Images\login_cover.jpg" />
+    <Content Include="Images\maintenance.jpg" />
     <Content Include="Images\MyUCLA.jpg" />
     <Content Include="Images\planner_pic.gif" />
     <Content Include="Images\registrar.gif" />
