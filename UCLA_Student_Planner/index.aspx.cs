@@ -277,7 +277,11 @@ namespace UCLA_Student_Planner
         {
             int userID;
             if (Request.Form["userID"] == null)
+            {
+                if (uid.Value == "")
+                    Response.Redirect("SessionExpired.aspx", true);
                 userID = Int32.Parse(uid.Value);
+            }
             else
             {
                 userID = Int32.Parse(Request.Form["userID"]);
