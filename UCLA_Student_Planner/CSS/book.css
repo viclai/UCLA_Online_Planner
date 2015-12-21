@@ -266,12 +266,25 @@ button {
     text-align: left;
 }
 
-#signOutButton, #tipsButton {
+#signOutButton, #tipsButton, #jumpButton, #todayButton {
     border-radius: 5px;
     padding: 5px 10px;
-    background-color: blue;
     color: gold;
     cursor: pointer;
+}
+
+#signOutButton, #tipsButton {
+    background-color: blue;
+}
+
+#jumpButton, #todayButton {
+    background-color: #0099cc;
+    border: solid black 1px;
+}
+
+#jumpIn {
+    background: transparent;
+    border: blue solid 1px;
 }
 
 #tips {

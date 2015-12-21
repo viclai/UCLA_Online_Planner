@@ -40,6 +40,11 @@
     <div id="tools">
         <button type="button" id="signOutButton" onclick="logOut();">LOG OUT</button>
         <button type="button" id="tipsButton" onclick="showTips();">TIPS</button>
+        &nbsp;&nbsp;&nbsp;
+        <input type="date" id="jumpIn" placeholder="yyyy-mm-dd" />
+        <button type="button" id="jumpButton" onclick="jump();">Jump</button>
+        &nbsp;&nbsp;&nbsp;
+        <button type="button" id="todayButton" onclick="jumpToday();" title="Jump to today">Today</button>
     </div>
     <table>
         <tr>
@@ -95,12 +100,19 @@
         Here are a few things you can try out.
         <ul>
             <li>Flip through the pages by using the LEFT and RIGHT arrow keys or by clicking the corners of the pages.</li>
+            <li>Jump to speific entries by entering the corresponding date.</li>
             <li>Add/edit entries for each day or week. Entry submissions will be on the very right.</li>
         </ul>
     </div>
 </body>
 
 <script>
+    $("#jumpIn").keyup(function (event) {
+        if (event.keyCode == 13) {
+            $("#jumpButton").click();
+        }
+    });
+
     function logOut() {
         if (document.getElementById("sidebar").getElementsByTagName("textarea").length != 0) {
             alert("You have not submitted your entry yet.  Please click 'Submit' or 'Cancel' before logging out.");

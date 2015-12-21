@@ -1,4 +1,7 @@
-﻿function addEntry(parId) {
+﻿var datesToPages = {};
+var startingPg = 1;
+
+function addEntry(parId) {
     var sb = document.getElementById("sidebar");
 
     if (sb.getElementsByTagName("textarea").length == 0) {
@@ -216,8 +219,10 @@ function loadApp() {
 
     var weekCount = 1;
     var pg = 1;
-    var startingPg = 1;
 
+    /* Cover page (page 1) is already in HTML - so no need to load */
+
+    /* BEGIN loading main pages */
     while (curDate !== endDate || curMonth !== endMonth ||
             curYear !== endYear || curDay !== endDay) {
 
@@ -252,6 +257,12 @@ function loadApp() {
                 newPg.appendChild(pageContain);
             }
         }
+
+        // Hash date to page number
+        var dateStr =
+            curMonth.toString() + curDate.toString() + curYear.toString();
+        console.log(dateStr);
+        datesToPages[dateStr] = pg;
 
         if (tdyDate === curDate && tdyMonth === curMonth &&
                 tdyYear === curYear && tdyDay === curDay) {
@@ -323,7 +334,8 @@ function loadApp() {
         //eventButton.setAttribute("class", "events-center");
         //eventButton.innerHTML = "Events";
 
-        var date = document.createElement("h2"); // TODO: create onhover/onclick for events.
+        var date = document.createElement("h2"); // TODO: create onhover/
+                                                 // onclick for events.
         date.setAttribute("class", "date");
         date.innerHTML = days[curDay] + "<br>" + curDate + "<br>" +
             months[curMonth];
@@ -395,6 +407,7 @@ function loadApp() {
 			incrementYear(curYear) : curYear;
         curMonth = (curDate === 1) ? incrementMonth(curMonth) : curMonth;
     }
+    /* END loading main pages */
     console.log("Total pages: " + pg - 1);
 
     /* Load back cover here. */
@@ -541,6 +554,41 @@ function isLeapYear(year) {
     }
 }
 
+// Jump to the page containing the specified date entered in 'jumpIn' input
+function jump() {
+    var date = document.getElementById("jumpIn").value; // Format: yyyy-mm-dd
+    var elems = date.split("-");
+
+    // Convert to mmddyyyy format
+    var dateStr = "";
+    if (elems[1][0] == "0")
+        dateStr += parseInt(elems[1][1]) - 1;
+    else
+        dateStr += parseInt(elems[1]) - 1;
+    
+    if (elems[2][0] == "0")
+        dateStr += elems[2][1];
+    else
+        dateStr += elems[2];
+
+    dateStr += elems[0];
+
+    if (dateStr in datesToPages) {
+        var pg = datesToPages[dateStr];
+        $('.flipbook').turn('page', pg);
+    }
+    else {
+        // Print error some place
+    }
+    document.getElementById("jumpIn").value = "";
+}
+
+// Jump to the page containing today's date
+function jumpToday() {
+    if (startingPg !== 1)
+        $('.flipbook').turn('page', startingPg);
+}
+
 // Parameter 'pgNum' specifies the page of the book that should be opened to.
 function loadBook(pgNum) {
 
@@ -601,7 +649,8 @@ function loadBook(pgNum) {
     $(document).keydown(function (e) {
 
         var previous = 37, next = 39;
-        if (e.target.nodeName == 'TEXTAREA' && (e.keyCode == previous || e.keyCode == next))
+        if ((e.target.nodeName == 'TEXTAREA' || e.target.id == 'jumpIn') &&
+            (e.keyCode == previous || e.keyCode == next))
             return;
          
         switch (e.keyCode) {
