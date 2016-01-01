@@ -100,8 +100,8 @@
         Here are a few things you can try out.
         <ul>
             <li>Flip through the pages by using the LEFT and RIGHT arrow keys or by clicking the corners of the pages.</li>
-            <li>Jump to speific entries by entering the corresponding date.</li>
-            <li>Add/edit entries for each day or week. Entry submissions will be on the very right.</li>
+            <li>Jump to a specific entry by entering its corresponding date.</li>
+            <li>Add/edit entries for each day or week in the right sidebar.</li>
         </ul>
     </div>
 </body>
