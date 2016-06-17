@@ -153,15 +153,13 @@
             <ul>
                 <li><a href="http://my.ucla.edu/" target="_blank">MyUCLA</a></li>
                 <li><a href="https://ccle.ucla.edu/" target="_blank">CCLE</a></li>
-                <li><a href="http://www.registrar.ucla.edu/calendar/" target="_blank"
+                <li><a href="http://registrar.ucla.edu/Calendars/Overview" target="_blank"
                     title="Check out when school is in session!">Calendars</a></li>
-                <li><a href="http://www.registrar.ucla.edu/schedule/schedulehome.aspx" target="_blank">Schedule of Classes</a></li>
+                <li><a href="https://sa.ucla.edu/ro/Public/SOC" target="_blank">Schedule of Classes</a></li>
                 <li><a href="http://www.courserail.com/" target="_blank"
                     title="Find your classes!">Course Rail</a></li>
                 <li><a href="http://classscanner.com/" target="_blank" 
                     title="Get alerts on courses in high demand!">Class Scanner</a></li>
-                <li><a href="http://www.registrar.ucla.edu/schedule/gesearch.aspx" target="_blank"
-                    title="Find a GE by category!">GE Class Search</a></li>
                 <li><a href="http://www.bruinwalk.com/" target="_blank" 
                     title="Check our reviews and grade distributions of professors!">Bruinwalk</a></li>
             </ul>
