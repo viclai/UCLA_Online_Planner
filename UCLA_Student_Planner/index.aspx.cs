@@ -61,38 +61,43 @@ namespace UCLA_Student_Planner
             string curMonth = DateTime.Now.Month.ToString();
 
             // Get calendar from registrar page based on the current academic year.
-            string curAcademYear = curSchoolYear(curMonth, curYear);
+            string curAcademYear = curSchoolYear(curMonth, curYear); // TODO
             startEndDates.Value += curAcademYear + "|";
             string htmlCurAcademYear =
-                client.DownloadString("http://www.registrar.ucla.edu/calendar/acadcal" +
-                curAcademYear.Substring(2, 2) + ".htm");
+                client.DownloadString("http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar");
+            string yearPattern =
+                        "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + curAcademYear + "-\\d+</a></li>";
+            Regex rgxYear = new Regex(yearPattern);
+            string id = rgxYear.Match(htmlCurAcademYear).Groups[2].Value;
 
-            string pattern1 =
-                "<tr\\s+align=\"left\">\\s*" +
-                "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"200\">[^<]+</td>\\s*" +
-                "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"340\">(<span class=\"red\">)?[^<]+(</span>)?</td>\\s*" +
-                "</tr>";
-            Regex rgx1 = new Regex(pattern1);
+            string divPattern =
+                "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
+                "<table\\s+class=\"table\">\\s*" +
+                "<tbody>\\s*" +
+                "(.+)" +
+                "</tbody>\\s*" +
+                "</table>\\s*" +
+                "</div>\\s*</div>";
+            string content = Regex.Match(htmlCurAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
+
+            string cellPattern =
+                "<tr>\\s*<td>\\s*(.+)\\s*</td>\\s*<td>\\s*(.+)\\s*</td>\\s*</tr>";
+            Regex rgx1 = new Regex(cellPattern);
             bool isStart = true;
             DateTime[] breakDates = new DateTime[2] {new DateTime(1970, 1, 1), new DateTime (1970, 1, 1)};
             /* Load events (including start date) into hidden fields. */
-            foreach (Match match in rgx1.Matches(htmlCurAcademYear))
+            foreach (Match match in rgx1.Matches(content))
             {
                 string contentPattern = ">[A-Z][^<]+<";
                 Regex innerRgx = new Regex(contentPattern);
-                string evt = innerRgx.Matches(match.Value)[0].ToString();
-                int evtLen = evt.Length;
-                string date = innerRgx.Matches(match.Value)[1].ToString();
-                int dateLen = date.Length;
+                string evt = match.Groups[1].Value;
+                string date = match.Groups[2].Value;
 
-                string eventStr = evt.Substring(1, evtLen - 2);
-                string dateStr = date.Substring(1, dateLen - 2);
-
-                eventsToDates.Value += eventStr + "|" + dateStr + ";";
-                if (eventStr == "Quarter ends") // For calulcating winter/spring break intervals
+                eventsToDates.Value += evt + "|" + date + ";";
+                if (evt == "Quarter ends") // For calulcating winter/spring break intervals
                 {
                     string[] dateContent = 
-                        dateStr.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        date.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     int month = monthNo(dateContent[1]);
                     int year;
                     if (month >= 9)
@@ -102,17 +107,17 @@ namespace UCLA_Student_Planner
                     int dateNo = Convert.ToInt32(dateContent[2]);
                     breakDates[0] = new DateTime(year, month, dateNo);
                 }
-                if (isStart && eventStr == "Quarter begins")
+                if (isStart && evt == "Quarter begins")
                 {
-                    startEndDates.Value += date.Substring(1, dateLen - 2) + "|";
-                    academYearStart = date.Substring(1, dateLen - 2);
+                    startEndDates.Value += date + "|";
+                    academYearStart = date;
                 }
-                if (isStart && eventStr == "Instruction begins")
+                if (isStart && evt == "Instruction begins")
                     isStart = false;
-                else if (!isStart && eventStr == "Instruction begins") // For calulcating winter/spring break intervals
+                else if (!isStart && evt == "Instruction begins") // For calulcating winter/spring break intervals
                 {
                     string[] dateContent = 
-                        dateStr.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        date.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     int month = monthNo(dateContent[1]);
                     int year;
                     if (month >= 9)
@@ -132,17 +137,28 @@ namespace UCLA_Student_Planner
             string nextAcademYear = (Convert.ToInt32(curAcademYear) + 1).ToString();
             WebClient client2 = new WebClient();
             string htmlnextAcademYear =
-                client2.DownloadString("http://www.registrar.ucla.edu/calendar/acadcal" +
-                nextAcademYear.Substring(2, 2) + ".htm");
-            string pattern2 =
-                "<tr\\s+align=\"left\">\\s*" +
-                "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"200\">Quarter begins</td>\\s*" +
-                "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"340\">(<span class=\"red\">)?[^<]+(</span>)?</td>\\s*" +
-                "</tr>";
-            Regex rgx2 = new Regex(pattern2);
-            string datePattern = "Monday, [^<]+"; // ASSUMPTION: Quarter begins on a Monday
-            Regex subRgx = new Regex(datePattern);
-            string endDate = subRgx.Match(rgx2.Match(htmlnextAcademYear).ToString()).ToString();
+                client2.DownloadString("http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar");
+
+            yearPattern =
+                "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
+            rgxYear = new Regex(yearPattern);
+            id = rgxYear.Match(htmlnextAcademYear).Groups[2].Value;
+
+            divPattern =
+                "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
+                "<table\\s+class=\"table\">\\s*" +
+                "<tbody>\\s*" +
+                "(.+)" +
+                "</tbody>\\s*" +
+                "</table>\\s*" +
+                "</div>\\s*</div>";
+            content = Regex.Match(htmlnextAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
+
+            string startPattern =
+                "<td>\\s*Quarter begins.+Monday,\\s+(.+)\\s*</td>"; // ASSUMPTION: Quarter begins on a Monday
+            Regex rgxStart = new Regex(startPattern);
+            string endDate = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
+            
             startEndDates.Value += endDate;
             academYearEnd = endDate;
 
@@ -239,21 +255,28 @@ namespace UCLA_Student_Planner
                     break;
                 case "9": // ASSUMPTION: Academic year always starts in September
                     WebClient client = new WebClient();
-                    string reply = 
-                        client.DownloadString("http://www.registrar.ucla.edu/calendar/acadcal" + 
-                        year.Substring(2, 2) + ".htm");
-                    string pattern = 
-                        "<tr\\s+align=\"left\">\\s*" + 
-                        "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"200\">Quarter begins</td>\\s*" +
-                        "<td\\s+(class=\"bold\"\\s+)?(bgcolor=\"#FAE9F7\"\\s+)?width=\"340\">[^<]+</td>\\s*" +
-                        "</tr>";
-                    Regex rgx = new Regex(pattern);
-                    Match fallQuarterBegins = rgx.Match(reply);
+                    string reply =
+                        client.DownloadString("http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar");
+                    string yearPattern = 
+                        "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + year + "-\\d+</a></li>";
+                    Regex rgxYear = new Regex(yearPattern);
+                    string id = rgxYear.Match(reply).Groups[2].Value;
 
-                    string subpattern = "September \\d+";
-                    Regex rgx2 = new Regex(subpattern);
-                    Match date = rgx2.Match(fallQuarterBegins.Value);
-                    int dateLen = date.Value.Length;
+                    string divPattern = 
+                        "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
+                        "<table\\s+class=\"table\">\\s*" +
+                        "<tbody>\\s*" +
+                        "(.+)" +
+                        "</tbody>\\s*" +
+                        "</table>\\s*" +
+                        "</div>\\s*</div>";
+                    string content = Regex.Match(reply, divPattern, RegexOptions.Singleline).Groups[1].Value;
+
+                    string startPattern =
+                        "<td>\\s*Quarter begins.+September\\s+(\\d+)\\s*</td>";
+                    Regex rgxStart = new Regex(startPattern);
+                    string dayNum = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
+
                     string now = DateTime.Now.Date.ToString("d"); // Format: mm/dd/yyyy
                     int firstSlash = now.IndexOf('/', 0);
                     int secondSlash = now.IndexOf('/', firstSlash + 1);
@@ -261,8 +284,8 @@ namespace UCLA_Student_Planner
 
                     // Compare today's date with date of Fall Quarter beginning
                     int curDate = Convert.ToInt32(parsedDate);
-                    int schoolStartDate = Convert.ToInt32(date.Value.Substring(dateLen - 2, 2));
-                    if (curDate < schoolStartDate)
+                    int schoolStartDate = Convert.ToInt32(dayNum);
+                    if (curDate < schoolStartDate) // TODO
                         curAcademYear = (Convert.ToInt32(curAcademYear) - 1).ToString();
                     break;
                 case "10":
