@@ -26,7 +26,7 @@ namespace UCLA_Student_Planner
             checkSession();
             loadDayEntries();
             loadWeekEntries();
-            loadEvents();   
+            loadEvents();
         }
 
         private void checkSession()
@@ -257,7 +257,7 @@ namespace UCLA_Student_Planner
                     string defYearPattern = 
                         "<li\\s+class=\"active\"><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>(\\d+)-\\d+</a></li>";
                     Regex rgxDefYear = new Regex(defYearPattern);
-                    string defaultYear = rgxDefYear.Match(reply).Groups[2].Value;
+                    string defaultYear = rgxDefYear.Match(reply).Groups[3].Value;
                     string yearPattern = 
                         "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + year + "-\\d+</a></li>";
                     Regex rgxYear = new Regex(yearPattern);
