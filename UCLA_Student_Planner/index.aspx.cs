@@ -35,6 +35,8 @@ namespace UCLA_Student_Planner
                 Response.Redirect("SessionExpired.aspx", true);
         }
 
+        private const string UCLA_CALENDAR_PAGE = "http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar";
+
         private void loadEvents()
         {
             string academYearStart = "", academYearEnd = "";
@@ -61,14 +63,13 @@ namespace UCLA_Student_Planner
             string curMonth = DateTime.Now.Month.ToString();
 
             // Get calendar from registrar page based on the current academic year.
-            string curAcademYear = curSchoolYear(curMonth, curYear); // TODO
+            string curAcademYear = curSchoolYear(curMonth, curYear);
             startEndDates.Value += curAcademYear + "|";
-            string htmlCurAcademYear =
-                client.DownloadString("http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar");
+            string htmlAcademYear = client.DownloadString(UCLA_CALENDAR_PAGE);
             string yearPattern =
-                        "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + curAcademYear + "-\\d+</a></li>";
+                "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + curAcademYear + "-\\d+</a></li>";
             Regex rgxYear = new Regex(yearPattern);
-            string id = rgxYear.Match(htmlCurAcademYear).Groups[2].Value;
+            string id = rgxYear.Match(htmlAcademYear).Groups[2].Value;
 
             string divPattern =
                 "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
@@ -78,7 +79,7 @@ namespace UCLA_Student_Planner
                 "</tbody>\\s*" +
                 "</table>\\s*" +
                 "</div>\\s*</div>";
-            string content = Regex.Match(htmlCurAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
+            string content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
 
             string cellPattern =
                 "<tr>\\s*<td>\\s*(.+)\\s*</td>\\s*<td>\\s*(.+)\\s*</td>\\s*</tr>";
@@ -135,14 +136,11 @@ namespace UCLA_Student_Planner
 
             /* Load end date (by getting date of Fall Quarter beginning next year) into hidden field. */
             string nextAcademYear = (Convert.ToInt32(curAcademYear) + 1).ToString();
-            WebClient client2 = new WebClient();
-            string htmlnextAcademYear =
-                client2.DownloadString("http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar");
 
             yearPattern =
                 "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
             rgxYear = new Regex(yearPattern);
-            id = rgxYear.Match(htmlnextAcademYear).Groups[2].Value;
+            id = rgxYear.Match(htmlAcademYear).Groups[2].Value;
 
             divPattern =
                 "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
@@ -152,7 +150,7 @@ namespace UCLA_Student_Planner
                 "</tbody>\\s*" +
                 "</table>\\s*" +
                 "</div>\\s*</div>";
-            content = Regex.Match(htmlnextAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
+            content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
 
             string startPattern =
                 "<td>\\s*Quarter begins.+Monday,\\s+(.+)\\s*</td>"; // ASSUMPTION: Quarter begins on a Monday
@@ -255,8 +253,11 @@ namespace UCLA_Student_Planner
                     break;
                 case "9": // ASSUMPTION: Academic year always starts in September
                     WebClient client = new WebClient();
-                    string reply =
-                        client.DownloadString("http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar");
+                    string reply = client.DownloadString(UCLA_CALENDAR_PAGE);
+                    string defYearPattern = 
+                        "<li\\s+class=\"active\"><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>(\\d+)-\\d+</a></li>";
+                    Regex rgxDefYear = new Regex(defYearPattern);
+                    string defaultYear = rgxDefYear.Match(reply).Groups[2].Value;
                     string yearPattern = 
                         "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + year + "-\\d+</a></li>";
                     Regex rgxYear = new Regex(yearPattern);
@@ -285,8 +286,8 @@ namespace UCLA_Student_Planner
                     // Compare today's date with date of Fall Quarter beginning
                     int curDate = Convert.ToInt32(parsedDate);
                     int schoolStartDate = Convert.ToInt32(dayNum);
-                    if (curDate < schoolStartDate) // TODO
-                        curAcademYear = (Convert.ToInt32(curAcademYear) - 1).ToString();
+                    if (curDate < schoolStartDate)
+                        curAcademYear = defaultYear;
                     break;
                 case "10":
                 case "11":
