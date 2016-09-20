@@ -39,7 +39,8 @@ namespace UCLA_Student_Planner
 
         private void loadEvents()
         {
-            string academYearStart = "", academYearEnd = "";
+            string academYearStart = "";
+            string academYearEnd = "";
 
             int breakI = 0;
             int[] breaks = new int[2]; // [0]: winter, [1]: spring
@@ -89,8 +90,6 @@ namespace UCLA_Student_Planner
             /* Load events (including start date) into hidden fields. */
             foreach (Match match in rgx1.Matches(content))
             {
-                string contentPattern = ">[A-Z][^<]+<";
-                Regex innerRgx = new Regex(contentPattern);
                 string evt = match.Groups[1].Value;
                 string date = match.Groups[2].Value;
 
@@ -162,14 +161,14 @@ namespace UCLA_Student_Planner
 
             /* Calculate number of weeks of summer */
             string[] academYearStartContent = 
-                academYearStart.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                academYearStart.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int startMonth = monthNo(academYearStartContent[0]);
             int startYear = Convert.ToInt32(curAcademYear);
             int startDateNo = Convert.ToInt32(academYearStartContent[1]);
             breakDates[0] = new DateTime(startYear, startMonth, startDateNo);
 
             string[] academYearEndContent = 
-                academYearEnd.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                academYearEnd.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int endMonth = monthNo(academYearEndContent[0]);
             int endYear = Convert.ToInt32(curAcademYear) + 1;
             int endDateNo = Convert.ToInt32(academYearEndContent[1]);
