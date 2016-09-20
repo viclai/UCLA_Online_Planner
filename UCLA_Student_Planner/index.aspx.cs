@@ -161,10 +161,10 @@ namespace UCLA_Student_Planner
 
             /* Calculate number of weeks of summer */
             string[] academYearStartContent = 
-                academYearStart.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            int startMonth = monthNo(academYearStartContent[0]);
+                academYearStart.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            int startMonth = monthNo(academYearStartContent[1]);
             int startYear = Convert.ToInt32(curAcademYear);
-            int startDateNo = Convert.ToInt32(academYearStartContent[1]);
+            int startDateNo = Convert.ToInt32(academYearStartContent[2]);
             breakDates[0] = new DateTime(startYear, startMonth, startDateNo);
 
             string[] academYearEndContent = 
