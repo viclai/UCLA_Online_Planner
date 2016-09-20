@@ -84,17 +84,16 @@ namespace UCLA_Student_Planner
 
             string cellPattern =
                 "<tr>\\s*<td>\\s*(.+)\\s*</td>\\s*<td>\\s*(.+)\\s*</td>\\s*</tr>";
-            Regex rgx1 = new Regex(cellPattern);
             bool isStart = true;
             DateTime[] breakDates = new DateTime[2] {new DateTime(1970, 1, 1), new DateTime (1970, 1, 1)};
             /* Load events (including start date) into hidden fields. */
-            foreach (Match match in rgx1.Matches(content))
+            foreach (Match match in Regex.Matches(content, cellPattern, RegexOptions.Singleline))
             {
                 string evt = match.Groups[1].Value;
                 string date = match.Groups[2].Value;
 
                 eventsToDates.Value += evt + "|" + date + ";";
-                if (evt == "Quarter ends") // For calulcating winter/spring break intervals
+                if (evt == "Quarter ends") // For calculating winter/spring break intervals
                 {
                     string[] dateContent = 
                         date.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
