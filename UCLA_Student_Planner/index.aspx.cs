@@ -137,7 +137,7 @@ namespace UCLA_Student_Planner
             System.Diagnostics.Trace.TraceInformation("Next academic year: " + nextAcademYear);
 
             yearPattern =
-                "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
+                "<li\\s*(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
             rgxYear = new Regex(yearPattern);
             id = rgxYear.Match(htmlAcademYear).Groups[2].Value;
             System.Diagnostics.Trace.TraceInformation("HTML ID: " + id);
