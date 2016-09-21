@@ -161,16 +161,43 @@ namespace UCLA_Student_Planner
             /* Calculate number of weeks of summer */
             string[] academYearStartContent = 
                 academYearStart.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            int startMonth = monthNo(academYearStartContent[1]);
+            int startMonth = -1;
+            int startDateNo = -1;
+            try
+            {
+                startMonth = monthNo(academYearStartContent[1]);
+                startDateNo = Convert.ToInt32(academYearStartContent[2]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("academYearStart\n")
+                Console.WriteLine("Error message:\n" + e.Message);
+                Console.WriteLine("\nStack trace:\n" + e.StackTrace);
+                Console.WriteLine("\nTarget site:\n" + e.TargetSite);
+                System.Environment.Exit(-1);
+            }
             int startYear = Convert.ToInt32(curAcademYear);
-            int startDateNo = Convert.ToInt32(academYearStartContent[2]);
             breakDates[0] = new DateTime(startYear, startMonth, startDateNo);
 
             string[] academYearEndContent = 
                 academYearEnd.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            int endMonth = monthNo(academYearEndContent[0]);
+            int endMonth = -1;
+            int endDateNo = -1;
+            try
+            {
+                endMonth = monthNo(academYearEndContent[0]);
+                endDateNo = Convert.ToInt32(academYearEndContent[1]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("academYearEnd\n")
+                Console.WriteLine("Error message:\n" + e.Message);
+                Console.WriteLine("\nStack trace:\n" + e.StackTrace);
+                Console.WriteLine("\nTarget site:\n" + e.TargetSite);
+                System.Environment.Exit(-1);
+            }
             int endYear = Convert.ToInt32(curAcademYear) + 1;
-            int endDateNo = Convert.ToInt32(academYearEndContent[1]);
+            
             breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
             int totalWeeks = nWeeks(breakDates[0], breakDates[1]);
 
