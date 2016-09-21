@@ -185,6 +185,7 @@ namespace UCLA_Student_Planner
             {
                 endMonth = monthNo(academYearEndContent[1]);
                 endDateNo = Convert.ToInt32(academYearEndContent[2]);
+                System.Diagnostics.Trace.TraceInformation(academYearEndContent[1] + " " + academYearEndContent[2]);
             }
             catch (Exception e)
             {
