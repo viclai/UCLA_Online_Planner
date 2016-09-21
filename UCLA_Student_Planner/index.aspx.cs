@@ -151,8 +151,7 @@ namespace UCLA_Student_Planner
             content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
 
             string startPattern =
-                "<td>\\s*Quarter begins.+Monday,\\s+(.+)\\s*</td>"; // ASSUMPTION: Quarter begins on a Monday
-            Regex rgxStart = new Regex(startPattern);
+                "<td>\\s*Quarter begins\\s*</td>\\s*<td>\\s*([^<]+)\\s*</td>";
             string endDate = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
             
             startEndDates.Value += endDate;
@@ -184,8 +183,8 @@ namespace UCLA_Student_Planner
             int endDateNo = -1;
             try
             {
-                endMonth = monthNo(academYearEndContent[0]);
-                endDateNo = Convert.ToInt32(academYearEndContent[1]);
+                endMonth = monthNo(academYearEndContent[1]);
+                endDateNo = Convert.ToInt32(academYearEndContent[2]);
             }
             catch (Exception e)
             {
