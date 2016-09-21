@@ -178,7 +178,7 @@ namespace UCLA_Student_Planner
             breakDates[0] = new DateTime(startYear, startMonth, startDateNo);
 
             string[] academYearEndContent = 
-                academYearEnd.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             int endMonth = -1;
             int endDateNo = -1;
             try
