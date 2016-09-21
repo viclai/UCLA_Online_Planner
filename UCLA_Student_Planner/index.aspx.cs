@@ -83,11 +83,11 @@ namespace UCLA_Student_Planner
             string content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
 
             string cellPattern =
-                "<tr>\\s*<td>\\s*(.+)\\s*</td>\\s*<td>\\s*(.+)\\s*</td>\\s*</tr>";
+                "<tr>\\s*<td>\\s*([^\\r]+)\\s*</td>\\s*<td>\\s*([^\\r]+)\\s*</td>\\s*</tr>";
             bool isStart = true;
             DateTime[] breakDates = new DateTime[2] {new DateTime(1970, 1, 1), new DateTime (1970, 1, 1)};
             /* Load events (including start date) into hidden fields. */
-            foreach (Match match in Regex.Matches(content, cellPattern, RegexOptions.Singleline))
+            foreach (Match match in Regex.Matches(content, cellPattern, RegexOptions.None))
             {
                 string evt = match.Groups[1].Value;
                 string date = match.Groups[2].Value;
