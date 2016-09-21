@@ -179,7 +179,7 @@ namespace UCLA_Student_Planner
 
             string[] academYearEndContent = 
                 academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach c in academYearEndContent
+            foreach (string c in academYearEndContent)
             {
                 System.Diagnostics.Trace.TraceInformation(c + "\n");
             }
