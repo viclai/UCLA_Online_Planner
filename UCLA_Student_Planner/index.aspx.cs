@@ -170,10 +170,10 @@ namespace UCLA_Student_Planner
             }
             catch (Exception e)
             {
-                Console.WriteLine("academYearStart\n")
-                Console.WriteLine("Error message:\n" + e.Message);
-                Console.WriteLine("\nStack trace:\n" + e.StackTrace);
-                Console.WriteLine("\nTarget site:\n" + e.TargetSite);
+                System.Diagnostics.Debug.WriteLine("academYearStart\n")
+                System.Diagnostics.Debug.WriteLine("Error message:\n" + e.Message);
+                System.Diagnostics.Debug.WriteLine("\nStack trace:\n" + e.StackTrace);
+                System.Diagnostics.Debug.WriteLine("\nTarget site:\n" + e.TargetSite);
                 System.Environment.Exit(-1);
             }
             int startYear = Convert.ToInt32(curAcademYear);
@@ -190,10 +190,10 @@ namespace UCLA_Student_Planner
             }
             catch (Exception e)
             {
-                Console.WriteLine("academYearEnd\n")
-                Console.WriteLine("Error message:\n" + e.Message);
-                Console.WriteLine("\nStack trace:\n" + e.StackTrace);
-                Console.WriteLine("\nTarget site:\n" + e.TargetSite);
+                System.Diagnostics.Debug.WriteLine("academYearEnd\n")
+                System.Diagnostics.Debug.WriteLine("Error message:\n" + e.Message);
+                System.Diagnostics.Debug.WriteLine("\nStack trace:\n" + e.StackTrace);
+                System.Diagnostics.Debug.WriteLine("\nTarget site:\n" + e.TargetSite);
                 System.Environment.Exit(-1);
             }
             int endYear = Convert.ToInt32(curAcademYear) + 1;
