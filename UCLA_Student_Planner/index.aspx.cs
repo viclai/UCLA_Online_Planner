@@ -155,22 +155,52 @@ namespace UCLA_Student_Planner
 
             string startPattern =
                 "<td>\\s*Quarter begins\\s*</td>\\s*<td>\\s*([^<]+)\\s*</td>";
-            academYearEnd = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
+            string endDate = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
+            
+            startEndDates.Value += endDate;
+            academYearEnd = endDate;
 
             /* Calculate number of weeks of summer */
             string[] academYearStartContent = 
                 academYearStart.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            startEndDates.Value += academYearStartContent[1] + " " + academYearStartContent[2];
-            int startMonth = monthNo(academYearStartContent[1]);
-            int startDateNo = Convert.ToInt32(academYearStartContent[2]);
+            int startMonth = -1;
+            int startDateNo = -1;
+            try
+            {
+                startMonth = monthNo(academYearStartContent[1]);
+                startDateNo = Convert.ToInt32(academYearStartContent[2]);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceInformation("academYearStart\n");
+                System.Diagnostics.Trace.TraceInformation("Error message:\n" + e.Message);
+                System.Diagnostics.Trace.TraceInformation("\nStack trace:\n" + e.StackTrace);
+                System.Diagnostics.Trace.TraceInformation("\nTarget site:\n" + e.TargetSite);
+            }
             int startYear = Convert.ToInt32(curAcademYear);
             breakDates[0] = new DateTime(startYear, startMonth, startDateNo);
 
             string[] academYearEndContent = 
                 academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             System.Diagnostics.Trace.TraceInformation("Academic End Date: " + academYearEnd + "\n");
-            int endMonth = monthNo(academYearEndContent[1]);
-            int endDateNo = Convert.ToInt32(academYearEndContent[2]);
+            foreach (string c in academYearEndContent)
+            {
+                System.Diagnostics.Trace.TraceInformation(c + "\n");
+            }
+            int endMonth = -1;
+            int endDateNo = -1;
+            try
+            {
+                endMonth = monthNo(academYearEndContent[1]);
+                endDateNo = Convert.ToInt32(academYearEndContent[2]);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceInformation("academYearEnd\n");
+                System.Diagnostics.Trace.TraceInformation("Error message:\n" + e.Message);
+                System.Diagnostics.Trace.TraceInformation("\nStack trace:\n" + e.StackTrace);
+                System.Diagnostics.Trace.TraceInformation("\nTarget site:\n" + e.TargetSite);
+            }
             int endYear = Convert.ToInt32(curAcademYear) + 1;
             
             breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
