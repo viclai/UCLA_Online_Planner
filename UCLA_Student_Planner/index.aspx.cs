@@ -134,11 +134,13 @@ namespace UCLA_Student_Planner
 
             /* Load end date (by getting date of Fall Quarter beginning next year) into hidden field. */
             string nextAcademYear = (Convert.ToInt32(curAcademYear) + 1).ToString();
+            System.Diagnostics.Trace.TraceInformation("Next academic year: " + nextAcademYear);
 
             yearPattern =
                 "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
             rgxYear = new Regex(yearPattern);
             id = rgxYear.Match(htmlAcademYear).Groups[2].Value;
+            System.Diagnostics.Trace.TraceInformation("HTML ID: " + id;
 
             divPattern =
                 "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
@@ -149,6 +151,7 @@ namespace UCLA_Student_Planner
                 "</table>\\s*" +
                 "</div>\\s*</div>";
             content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
+            System.Diagnostics.Trace.TraceInformation("HTML Content:\n" + content);
 
             string startPattern =
                 "<td>\\s*Quarter begins\\s*</td>\\s*<td>\\s*([^<]+)\\s*</td>";
