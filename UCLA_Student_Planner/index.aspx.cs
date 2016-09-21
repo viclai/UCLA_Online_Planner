@@ -179,13 +179,16 @@ namespace UCLA_Student_Planner
 
             string[] academYearEndContent = 
                 academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach c in academYearEndContent
+            {
+                System.Diagnostics.Trace.TraceInformation(c + "\n");
+            }
             int endMonth = -1;
             int endDateNo = -1;
             try
             {
                 endMonth = monthNo(academYearEndContent[1]);
                 endDateNo = Convert.ToInt32(academYearEndContent[2]);
-                System.Diagnostics.Trace.TraceInformation(academYearEndContent[1] + " " + academYearEndContent[2]);
             }
             catch (Exception e)
             {
