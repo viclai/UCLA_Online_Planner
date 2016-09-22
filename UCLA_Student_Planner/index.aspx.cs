@@ -133,6 +133,7 @@ namespace UCLA_Student_Planner
             breakI = 0;
 
             /* Load end date (by getting date of Fall Quarter beginning next year) into hidden field. */
+            System.Diagnostics.Trace.TraceInformation("Current Academic Year: " + curAcademYear);
             string nextAcademYear = (Convert.ToInt32(curAcademYear) + 1).ToString();
             System.Diagnostics.Trace.TraceInformation("Next academic year: " + nextAcademYear);
 
@@ -198,7 +199,8 @@ namespace UCLA_Student_Planner
                 System.Diagnostics.Trace.TraceInformation("\nTarget site:\n" + e.TargetSite);
             }
             int endYear = Convert.ToInt32(curAcademYear) + 1;
-            
+            System.Diagnostics.Trace.TraceInformation("End year: " + endYear + ", end month: " + endMonth + ", end date: " +
+                endDateNo);
             breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
             int totalWeeks = nWeeks(breakDates[0], breakDates[1]);
 
@@ -312,8 +314,13 @@ namespace UCLA_Student_Planner
                     // Compare today's date with date of Fall Quarter beginning
                     int curDate = Convert.ToInt32(parsedDate);
                     int schoolStartDate = Convert.ToInt32(dayNum);
+                    System.Diagnostics.Trace.TraceInformation("School start date: " + schoolStartDate + ", current date: " +
+                        curDate);
                     if (curDate < schoolStartDate)
+                    {
                         curAcademYear = defaultYear;
+                        System.Diagnostics.Trace.TraceInformation("Using default year");
+                    }
                     break;
                 case "10":
                 case "11":
