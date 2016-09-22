@@ -146,7 +146,7 @@ namespace UCLA_Student_Planner
                 "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
                 "<table\\s+class=\"table\">\\s*" +
                 "<tbody>\\s*" +
-                "(.+)" +
+                "(.*?" + curAcademYear + ".*?)" +
                 "</tbody>\\s*" +
                 "</table>\\s*" +
                 "</div>\\s*</div>";
@@ -183,10 +183,6 @@ namespace UCLA_Student_Planner
             string[] academYearEndContent = 
                 academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             System.Diagnostics.Trace.TraceInformation("Academic End Date: " + academYearEnd + "\n");
-            foreach (string c in academYearEndContent)
-            {
-                System.Diagnostics.Trace.TraceInformation(c + "\n");
-            }
             int endMonth = -1;
             int endDateNo = -1;
             try
