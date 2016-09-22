@@ -205,8 +205,10 @@ function loadApp() {
     var endDate = // Include Zero Week of next year
         parseInt(arrStartEndDates[2].substring(endDateLen - 2,
         endDateLen)) + 7;
-    if (endDate > 30)
+    if (endDate > 30) {
         endDate = endDate % 30;
+        endMonth += 1;
+    }
     var endYear = parseInt(arrStartEndDates[0]) + 1;
     var endDay = indexOfDay(arrStartEndDates[2].substring(0, 3).toUpperCase());
     console.log("End month: " + endMonth + ", End date: " + endDate +
