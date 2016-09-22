@@ -222,7 +222,7 @@ function loadApp() {
 
     /* Cover page (page 1) is already in HTML - so no need to load */
 
-    /* BEGIN loading main pages *//*
+    /* BEGIN loading main pages */
     while (curDate !== endDate || curMonth !== endMonth ||
             curYear !== endYear || curDay !== endDay) {
 
@@ -277,7 +277,7 @@ function loadApp() {
             page = curPage.firstChild;
 
         if (curDay === 1) {
-            // Insert "Weekly Notes"
+            /* Insert "Weekly Notes" */
             var sectionW = document.createElement("div");
             sectionW.setAttribute("ignore", "1");
 
@@ -315,7 +315,7 @@ function loadApp() {
             weekCount++;
         }
 
-        // Load the current date's entry area here.
+        /* Load the current date's entry area here. */
         var sectionD = document.createElement("div");
         sectionD.setAttribute("ignore", "1");
 
@@ -399,18 +399,18 @@ function loadApp() {
         row.appendChild(rightCol);
         page.appendChild(sectionD);
 
-        // Increment
+        /* Increment */
         var prevDate = curDate;
         curDay = incrementDay(curDay);
         curDate = incrementDate(curDate, curMonth, curYear);
         curYear = (curMonth === 11 && prevDate === 31) ?
 			incrementYear(curYear) : curYear;
         curMonth = (curDate === 1) ? incrementMonth(curMonth) : curMonth;
-    }*/
-    // END loading main pages
+    }
+    /* END loading main pages */
     console.log("Total pages: " + pg - 1);
 
-    // Load back cover here.
+    /* Load back cover here. */
     var lastPg = document.createElement("div");
     lastPg.setAttribute("class", "hard");
     var b1 = document.createElement("br");
@@ -423,7 +423,7 @@ function loadApp() {
     lastPg.appendChild(par);
     flipbook[0].appendChild(lastPg);
 
-    // Load day entries from database (take data from hidden input field)
+    /* Load day entries from database (take data from hidden input field) */
     var str = document.getElementById("datesToEntries");
     var data = str.value;
     var rows = data.split(";");
@@ -441,7 +441,7 @@ function loadApp() {
         }
     }
 
-    // Load week entries from database (take data from hidden input field)
+    /* Load week entries from database (take data from hidden input field) */
     var weekEntrs = document.getElementById("weeksToEntries").value;
     var weekRows = weekEntrs.split(";");
 
