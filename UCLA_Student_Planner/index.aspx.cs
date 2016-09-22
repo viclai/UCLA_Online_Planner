@@ -201,7 +201,10 @@ namespace UCLA_Student_Planner
             int endYear = Convert.ToInt32(curAcademYear) + 1;
             System.Diagnostics.Trace.TraceInformation("End year: " + endYear + ", end month: " + endMonth + ", end date: " +
                 endDateNo);
-            breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
+            if (endDateNo + 7 > 30)
+                breakDates[1] = newDateTime(endYear, endMonth + 1, (endDateNo + 7) % 30);
+            else
+                breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
             int totalWeeks = nWeeks(breakDates[0], breakDates[1]);
 
             int weeksTaken = 0; // Number of non-summer weeks
