@@ -205,6 +205,8 @@ function loadApp() {
     var endDate = // Include Zero Week of next year
         parseInt(arrStartEndDates[2].substring(endDateLen - 2,
         endDateLen)) + 7;
+    if (endDate > 30)
+        endDate = endDate % 30;
     var endYear = parseInt(arrStartEndDates[0]) + 1;
     var endDay = indexOfDay(arrStartEndDates[2].substring(0, 3).toUpperCase());
     console.log("End month: " + endMonth + ", End date: " + endDate +
@@ -223,7 +225,7 @@ function loadApp() {
     /* Cover page (page 1) is already in HTML - so no need to load */
 
     /* BEGIN loading main pages */
-    /*
+    
     while (curDate !== endDate || curMonth !== endMonth ||
             curYear !== endYear || curDay !== endDay) {
 
@@ -407,7 +409,7 @@ function loadApp() {
         curYear = (curMonth === 11 && prevDate === 31) ?
 			incrementYear(curYear) : curYear;
         curMonth = (curDate === 1) ? incrementMonth(curMonth) : curMonth;
-    }*/
+    }
     /* END loading main pages */
     console.log("Total pages: " + pg - 1);
 
