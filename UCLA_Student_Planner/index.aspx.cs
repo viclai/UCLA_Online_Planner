@@ -146,7 +146,7 @@ namespace UCLA_Student_Planner
                 "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
                 "<table\\s+class=\"table\">\\s*" +
                 "<tbody>\\s*" +
-                "(.*?" + curAcademYear + ".*?)" +
+                "(.*?" + nextAcademYear + ".*?)" +
                 "</tbody>\\s*" +
                 "</table>\\s*" +
                 "</div>\\s*</div>";
