@@ -202,7 +202,7 @@ namespace UCLA_Student_Planner
             System.Diagnostics.Trace.TraceInformation("End year: " + endYear + ", end month: " + endMonth + ", end date: " +
                 endDateNo);
             if (endDateNo + 7 > 30)
-                breakDates[1] = newDateTime(endYear, endMonth + 1, (endDateNo + 7) % 30);
+                breakDates[1] = new DateTime(endYear, endMonth + 1, (endDateNo + 7) % 30);
             else
                 breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
             int totalWeeks = nWeeks(breakDates[0], breakDates[1]);
