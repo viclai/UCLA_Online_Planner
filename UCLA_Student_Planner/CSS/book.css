@@ -96,7 +96,7 @@ td {
 
 .weekly-notes, .entry-box {
     overflow-y: auto;
-    border-style: dashed;
+    border-style: solid;
     border-color: #FFFFFF;
 }
 
