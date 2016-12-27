@@ -39,7 +39,8 @@ namespace UCLA_Student_Planner
 
         private void loadEvents()
         {
-            string academYearStart = "", academYearEnd = "";
+            string academYearStart = "";
+            string academYearEnd = "";
 
             int breakI = 0;
             int[] breaks = new int[2]; // [0]: winter, [1]: spring
@@ -82,20 +83,17 @@ namespace UCLA_Student_Planner
             string content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
 
             string cellPattern =
-                "<tr>\\s*<td>\\s*(.+)\\s*</td>\\s*<td>\\s*(.+)\\s*</td>\\s*</tr>";
-            Regex rgx1 = new Regex(cellPattern);
+                "<tr>\\s*<td>\\s*([^\\r]+)\\s*</td>\\s*<td>\\s*([^\\r]+)\\s*</td>\\s*</tr>";
             bool isStart = true;
             DateTime[] breakDates = new DateTime[2] {new DateTime(1970, 1, 1), new DateTime (1970, 1, 1)};
             /* Load events (including start date) into hidden fields. */
-            foreach (Match match in rgx1.Matches(content))
+            foreach (Match match in Regex.Matches(content, cellPattern, RegexOptions.None))
             {
-                string contentPattern = ">[A-Z][^<]+<";
-                Regex innerRgx = new Regex(contentPattern);
                 string evt = match.Groups[1].Value;
                 string date = match.Groups[2].Value;
 
                 eventsToDates.Value += evt + "|" + date + ";";
-                if (evt == "Quarter ends") // For calulcating winter/spring break intervals
+                if (evt == "Quarter ends") // For calculating winter/spring break intervals
                 {
                     string[] dateContent = 
                         date.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -135,26 +133,29 @@ namespace UCLA_Student_Planner
             breakI = 0;
 
             /* Load end date (by getting date of Fall Quarter beginning next year) into hidden field. */
+            System.Diagnostics.Trace.TraceInformation("Current Academic Year: " + curAcademYear);
             string nextAcademYear = (Convert.ToInt32(curAcademYear) + 1).ToString();
+            System.Diagnostics.Trace.TraceInformation("Next academic year: " + nextAcademYear);
 
             yearPattern =
-                "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
+                "<li\\s*(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
             rgxYear = new Regex(yearPattern);
             id = rgxYear.Match(htmlAcademYear).Groups[2].Value;
+            System.Diagnostics.Trace.TraceInformation("HTML ID: " + id);
 
             divPattern =
                 "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
                 "<table\\s+class=\"table\">\\s*" +
                 "<tbody>\\s*" +
-                "(.+)" +
+                "(.*?" + nextAcademYear + ".*?)" +
                 "</tbody>\\s*" +
                 "</table>\\s*" +
                 "</div>\\s*</div>";
             content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
+            System.Diagnostics.Trace.TraceInformation("HTML Content:\n" + content);
 
             string startPattern =
-                "<td>\\s*Quarter begins.+Monday,\\s+(.+)\\s*</td>"; // ASSUMPTION: Quarter begins on a Monday
-            Regex rgxStart = new Regex(startPattern);
+                "<td>\\s*Quarter begins\\s*</td>\\s*<td>\\s*([^<]+)\\s*</td>";
             string endDate = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
             
             startEndDates.Value += endDate;
@@ -162,18 +163,48 @@ namespace UCLA_Student_Planner
 
             /* Calculate number of weeks of summer */
             string[] academYearStartContent = 
-                academYearStart.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            int startMonth = monthNo(academYearStartContent[0]);
+                academYearStart.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            int startMonth = -1;
+            int startDateNo = -1;
+            try
+            {
+                startMonth = monthNo(academYearStartContent[1]);
+                startDateNo = Convert.ToInt32(academYearStartContent[2]);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceInformation("academYearStart\n");
+                System.Diagnostics.Trace.TraceInformation("Error message:\n" + e.Message);
+                System.Diagnostics.Trace.TraceInformation("\nStack trace:\n" + e.StackTrace);
+                System.Diagnostics.Trace.TraceInformation("\nTarget site:\n" + e.TargetSite);
+            }
             int startYear = Convert.ToInt32(curAcademYear);
-            int startDateNo = Convert.ToInt32(academYearStartContent[1]);
             breakDates[0] = new DateTime(startYear, startMonth, startDateNo);
 
             string[] academYearEndContent = 
-                academYearEnd.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            int endMonth = monthNo(academYearEndContent[0]);
+                academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            System.Diagnostics.Trace.TraceInformation("Academic End Date: " + academYearEnd + "\n");
+            int endMonth = -1;
+            int endDateNo = -1;
+            try
+            {
+                endMonth = monthNo(academYearEndContent[1]);
+                endDateNo = Convert.ToInt32(academYearEndContent[2]);
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.TraceInformation("academYearEnd\n");
+                System.Diagnostics.Trace.TraceInformation("Error message:\n" + e.Message);
+                System.Diagnostics.Trace.TraceInformation("\nStack trace:\n" + e.StackTrace);
+                System.Diagnostics.Trace.TraceInformation("\nTarget site:\n" + e.TargetSite);
+            }
             int endYear = Convert.ToInt32(curAcademYear) + 1;
-            int endDateNo = Convert.ToInt32(academYearEndContent[1]);
-            breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
+            System.Diagnostics.Trace.TraceInformation("End year: " + endYear + ", end month: " + endMonth + ", end date: " +
+                endDateNo);
+            if (endDateNo + 7 > 30)
+                breakDates[1] = new DateTime(endYear, endMonth + 1, (endDateNo + 7) % 30);
+            else
+                breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
             int totalWeeks = nWeeks(breakDates[0], breakDates[1]);
 
             int weeksTaken = 0; // Number of non-summer weeks
@@ -286,8 +317,13 @@ namespace UCLA_Student_Planner
                     // Compare today's date with date of Fall Quarter beginning
                     int curDate = Convert.ToInt32(parsedDate);
                     int schoolStartDate = Convert.ToInt32(dayNum);
+                    System.Diagnostics.Trace.TraceInformation("School start date: " + schoolStartDate + ", current date: " +
+                        curDate);
                     if (curDate < schoolStartDate)
+                    {
                         curAcademYear = defaultYear;
+                        System.Diagnostics.Trace.TraceInformation("Using default year");
+                    }
                     break;
                 case "10":
                 case "11":

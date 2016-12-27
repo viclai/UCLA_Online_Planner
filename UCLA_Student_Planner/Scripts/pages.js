@@ -205,6 +205,10 @@ function loadApp() {
     var endDate = // Include Zero Week of next year
         parseInt(arrStartEndDates[2].substring(endDateLen - 2,
         endDateLen)) + 7;
+    if (endDate > 30) {
+        endDate = endDate % 30;
+        endMonth += 1;
+    }
     var endYear = parseInt(arrStartEndDates[0]) + 1;
     var endDay = indexOfDay(arrStartEndDates[2].substring(0, 3).toUpperCase());
     console.log("End month: " + endMonth + ", End date: " + endDate +
@@ -223,6 +227,7 @@ function loadApp() {
     /* Cover page (page 1) is already in HTML - so no need to load */
 
     /* BEGIN loading main pages */
+    
     while (curDate !== endDate || curMonth !== endMonth ||
             curYear !== endYear || curDay !== endDay) {
 
@@ -277,7 +282,7 @@ function loadApp() {
             page = curPage.firstChild;
 
         if (curDay === 1) {
-            /* Insert "Weekly Notes" */
+            // Insert "Weekly Notes"
             var sectionW = document.createElement("div");
             sectionW.setAttribute("ignore", "1");
 
@@ -315,7 +320,7 @@ function loadApp() {
             weekCount++;
         }
 
-        /* Load the current date's entry area here. */
+        // Load the current date's entry area here.
         var sectionD = document.createElement("div");
         sectionD.setAttribute("ignore", "1");
 
@@ -399,7 +404,7 @@ function loadApp() {
         row.appendChild(rightCol);
         page.appendChild(sectionD);
 
-        /* Increment */
+        // Increment
         var prevDate = curDate;
         curDay = incrementDay(curDay);
         curDate = incrementDate(curDate, curMonth, curYear);
