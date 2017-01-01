@@ -10,3 +10,9 @@ C:\Users\Victor Lai\Documents\GitHub\UCLA\SchoolPlanner\UCLA_Online_Planner\UCLA
 C:\Users\Victor Lai\Documents\GitHub\UCLA\SchoolPlanner\UCLA_Online_Planner\UCLA_Student_Planner\obj\Debug\UCLA_Student_Planner.csprojResolveAssemblyReference.cache
 C:\Users\Victor Lai\Documents\GitHub\UCLA\SchoolPlanner\UCLA_Online_Planner\UCLA_Student_Planner\obj\Debug\UCLA_Student_Planner.dll
 C:\Users\Victor Lai\Documents\GitHub\UCLA\SchoolPlanner\UCLA_Online_Planner\UCLA_Student_Planner\obj\Debug\UCLA_Student_Planner.pdb
+C:\Users\victo\Desktop\UCLA_Online_Planner\UCLA_Student_Planner\bin\UCLA_Student_Planner.dll.config
+C:\Users\victo\Desktop\UCLA_Online_Planner\UCLA_Student_Planner\bin\UCLA_Student_Planner.dll
+C:\Users\victo\Desktop\UCLA_Online_Planner\UCLA_Student_Planner\bin\UCLA_Student_Planner.pdb
+C:\Users\victo\Desktop\UCLA_Online_Planner\UCLA_Student_Planner\obj\Debug\UCLA_Student_Planner.csprojResolveAssemblyReference.cache
+C:\Users\victo\Desktop\UCLA_Online_Planner\UCLA_Student_Planner\obj\Debug\UCLA_Student_Planner.dll
+C:\Users\victo\Desktop\UCLA_Online_Planner\UCLA_Student_Planner\obj\Debug\UCLA_Student_Planner.pdb
