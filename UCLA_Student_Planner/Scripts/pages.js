@@ -12,9 +12,9 @@ function addEntry(parId) {
 
         var newForm = document.createElement("form");
         
-        var dateIn = document.createElement("input")
+        var dateIn = document.createElement("input");
         dateIn.setAttribute("id", "id_date");
-        dateIn.setAttribute("name", "entr_date")
+        dateIn.setAttribute("name", "entr_date");
         dateIn.setAttribute("type", "text");
         dateIn.setAttribute("value", parId);
         newForm.appendChild(dateIn);
@@ -345,11 +345,13 @@ function loadApp() {
         date.innerHTML = days[curDay] + "<br>" + curDate + "<br>" +
             months[curMonth];
 
-        var mth = incrementMonth(curMonth);
-        if (mth.toString().length == 1)
+        var mth = incrementMonth(curMonth) + "";
+        if (mth === "0")
+            mth = "12";
+        if (mth.length == 1)
             mth = "0" + mth;
-        var dateTemp = curDate;
-        if (dateTemp.toString().length == 1)
+        var dateTemp = curDate + "";
+        if (dateTemp.length == 1)
             dateTemp = "0" + dateTemp;
         var id = curYear + mth + dateTemp;
 
