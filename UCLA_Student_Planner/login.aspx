@@ -156,8 +156,6 @@
                 <li><a href="http://registrar.ucla.edu/Calendars/Overview" target="_blank"
                     title="Check out when school is in session!">Calendars</a></li>
                 <li><a href="https://sa.ucla.edu/ro/Public/SOC" target="_blank">Schedule of Classes</a></li>
-                <li><a href="http://www.courserail.com/" target="_blank"
-                    title="Find your classes!">Course Rail</a></li>
                 <li><a href="http://classscanner.com/" target="_blank" 
                     title="Get alerts on courses in high demand!">Class Scanner</a></li>
                 <li><a href="http://www.bruinwalk.com/" target="_blank" 
