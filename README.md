@@ -2,7 +2,7 @@
 
 *UCLA Online Planner* is a personal side project in development that creates a student planner as a Web application. The design of the planner is adopted from that of the student planner given to incoming UCLA freshmen at New Student Orientation and sold at the <a href="http://shop.uclastore.com/" target="_blank">UCLA Store</a>. The current planner can be viewed <a href="http://uclastudentplanner.apphb.com/login.aspx" target="_blank">here</a>.
 
-![screenshot](hub/planner_pic.gif "2014-15 version of planner")
+![Demo](hub/demo.gif "Planner demo")
 
 # Development
 
