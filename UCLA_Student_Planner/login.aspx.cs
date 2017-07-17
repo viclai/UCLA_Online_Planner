@@ -21,7 +21,7 @@ namespace UCLA_Student_Planner
         private void loadDateAndWeek()
         {
             WebClient client = new WebClient();
-            /*try
+            try
             {
                 string str = client.DownloadString("http://my.ucla.edu/");
 
@@ -34,7 +34,7 @@ namespace UCLA_Student_Planner
                 System.Diagnostics.Trace.TraceInformation("Error message:\n" + e.Message);
                 System.Diagnostics.Trace.TraceInformation("\nStack trace:\n" + e.StackTrace);
                 System.Diagnostics.Trace.TraceInformation("\nTarget site:\n" + e.TargetSite);
-            }*/
+            }
 
             //DateTime today = DateTime.Now;
             //dateWeek.InnerHtml += today.ToString("D");
