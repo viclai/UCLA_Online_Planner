@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 using System.Data;
 using System.Data.SqlClient;
-using System.Windows.Forms;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Configuration;
+using HtmlAgilityPack;
 
 namespace UCLA_Student_Planner
 {
@@ -35,14 +32,14 @@ namespace UCLA_Student_Planner
                 Response.Redirect("SessionExpired.aspx", true);
         }
 
-        private const string UCLA_CALENDAR_PAGE = "http://registrar.ucla.edu/Calendars/Annual-Academic-Calendar";
+        private const string UCLA_CALENDAR_PAGE = "http://www.registrar.ucla.edu/Calendars/Annual-Academic-Calendar";
 
         private void loadEvents()
         {
-            string academYearStart = "";
-            string academYearEnd = "";
+            var academYearStart = "";
+            var academYearEnd = "";
 
-            int breakI = 0;
+            var breakI = 0;
             int[] breaks = new int[2]; // [0]: winter, [1]: spring
             KeyValuePair<string, int>[] weekContent = new KeyValuePair<string, int>[] 
             {
@@ -59,41 +56,59 @@ namespace UCLA_Student_Planner
                 new KeyValuePair<string, int>("FALL QUARTER - ZERO WEEK", 1),
             };
 
-            WebClient client = new WebClient();
+            var web = new HtmlWeb();
+            HtmlAgilityPack.HtmlDocument doc = web.Load(UCLA_CALENDAR_PAGE);
+
             string curYear = DateTime.Now.Year.ToString();
             string curMonth = DateTime.Now.Month.ToString();
 
             // Get calendar from registrar page based on the current academic year.
             string curAcademYear = curSchoolYear(curMonth, curYear);
             startEndDates.Value += curAcademYear + "|";
-            string htmlAcademYear = client.DownloadString(UCLA_CALENDAR_PAGE);
-            string yearPattern =
-                "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + curAcademYear + "-\\d+</a></li>";
-            Regex rgxYear = new Regex(yearPattern);
-            string id = rgxYear.Match(htmlAcademYear).Groups[2].Value;
 
-            string divPattern =
-                "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
-                "<table\\s+class=\"table\">\\s*" +
-                "<tbody>\\s*" +
-                "(.+)" +
-                "</tbody>\\s*" +
-                "</table>\\s*" +
-                "</div>\\s*</div>";
-            string content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
+            var id = "";
+            var xpath = "//li/a[starts-with(text(), '" + curAcademYear + "')]";
+            HtmlNodeCollection id_nodes = doc.DocumentNode.SelectNodes(xpath);
+            if (id_nodes == null)
+            {
+                System.Diagnostics.Trace.TraceInformation(
+                    "ERROR fetching HTML ID of current academic year"
+                    );
+                return;
+            }
+            else
+                id = id_nodes.First().Attributes["href"].Value.Substring(1);
 
-            string cellPattern =
+            var content = "";
+            xpath = "//div[@id='" + id + "']/div/table/tbody";
+            HtmlNodeCollection event_nodes = doc.DocumentNode.SelectNodes(xpath);
+            if (event_nodes == null)
+            {
+                System.Diagnostics.Trace.TraceInformation(
+                    "ERROR fetching content of current academic year"
+                    );
+                return;
+            }
+            else
+                content = event_nodes.First().InnerHtml;
+
+            var cellPattern =
                 "<tr>\\s*<td>\\s*([^\\r]+)\\s*</td>\\s*<td>\\s*([^\\r]+)\\s*</td>\\s*</tr>";
-            bool isStart = true;
-            DateTime[] breakDates = new DateTime[2] {new DateTime(1970, 1, 1), new DateTime (1970, 1, 1)};
-            /* Load events (including start date) into hidden fields. */
+            var isStart = true;
+            DateTime[] breakDates = new DateTime[2]
+            {
+                new DateTime(1970, 1, 1),
+                new DateTime(1970, 1, 1)
+            };
+            // Load events (including start date). 
             foreach (Match match in Regex.Matches(content, cellPattern, RegexOptions.None))
             {
                 string evt = match.Groups[1].Value;
                 string date = match.Groups[2].Value;
 
                 eventsToDates.Value += evt + "|" + date + ";";
-                if (evt == "Quarter ends") // For calculating winter/spring break intervals
+                // For calculating winter/spring break intervals
+                if (evt == "Quarter ends")
                 {
                     string[] dateContent = 
                         date.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -113,7 +128,8 @@ namespace UCLA_Student_Planner
                 }
                 if (isStart && evt == "Instruction begins")
                     isStart = false;
-                else if (!isStart && evt == "Instruction begins") // For calulcating winter/spring break intervals
+                // For calulcating winter/spring break intervals
+                else if (!isStart && evt == "Instruction begins")
                 {
                     string[] dateContent = 
                         date.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
@@ -132,40 +148,49 @@ namespace UCLA_Student_Planner
             }
             breakI = 0;
 
-            /* Load end date (by getting date of Fall Quarter beginning next year) into hidden field. */
+            // Load end date (by getting date of Fall Quarter beginning next year).
             System.Diagnostics.Trace.TraceInformation("Current Academic Year: " + curAcademYear);
             string nextAcademYear = (Convert.ToInt32(curAcademYear) + 1).ToString();
             System.Diagnostics.Trace.TraceInformation("Next academic year: " + nextAcademYear);
 
-            yearPattern =
-                "<li\\s*(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + nextAcademYear + "-\\d+</a></li>";
-            rgxYear = new Regex(yearPattern);
-            id = rgxYear.Match(htmlAcademYear).Groups[2].Value;
-            System.Diagnostics.Trace.TraceInformation("HTML ID: " + id);
+            id = "";
+            xpath = "//li/a[starts-with(text(), '" + nextAcademYear + "')]";
+            id_nodes = doc.DocumentNode.SelectNodes(xpath);
+            if (id_nodes == null)
+            {
+                System.Diagnostics.Trace.TraceInformation(
+                    "ERROR fetching HTML ID of next academic year"
+                    );
+                return;
+            }
+            else
+                id = id_nodes.First().Attributes["href"].Value.Substring(1);
 
-            divPattern =
-                "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
-                "<table\\s+class=\"table\">\\s*" +
-                "<tbody>\\s*" +
-                "(.*?" + nextAcademYear + ".*?)" +
-                "</tbody>\\s*" +
-                "</table>\\s*" +
-                "</div>\\s*</div>";
-            content = Regex.Match(htmlAcademYear, divPattern, RegexOptions.Singleline).Groups[1].Value;
-            System.Diagnostics.Trace.TraceInformation("HTML Content:\n" + content);
+            content = "";
+            xpath = "//div[@id='" + id + "']/div/table/tbody";
+            event_nodes = doc.DocumentNode.SelectNodes(xpath);
+            if (event_nodes == null)
+            {
+                System.Diagnostics.Trace.TraceInformation(
+                    "ERROR fetching content of next academic year"
+                    );
+                return;
+            }
+            else
+                content = event_nodes.First().InnerHtml;
 
-            string startPattern =
+            var startPattern =
                 "<td>\\s*Quarter begins\\s*</td>\\s*<td>\\s*([^<]+)\\s*</td>";
             string endDate = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
             
             startEndDates.Value += endDate;
             academYearEnd = endDate;
 
-            /* Calculate number of weeks of summer */
+            // Calculate number of weeks of summer.
             string[] academYearStartContent = 
                 academYearStart.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            int startMonth = -1;
-            int startDateNo = -1;
+            var startMonth = -1;
+            var startDateNo = -1;
             try
             {
                 startMonth = monthNo(academYearStartContent[1]);
@@ -184,8 +209,8 @@ namespace UCLA_Student_Planner
             string[] academYearEndContent = 
                 academYearEnd.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             System.Diagnostics.Trace.TraceInformation("Academic End Date: " + academYearEnd + "\n");
-            int endMonth = -1;
-            int endDateNo = -1;
+            var endMonth = -1;
+            var endDateNo = -1;
             try
             {
                 endMonth = monthNo(academYearEndContent[1]);
@@ -199,17 +224,18 @@ namespace UCLA_Student_Planner
                 System.Diagnostics.Trace.TraceInformation("\nTarget site:\n" + e.TargetSite);
             }
             int endYear = Convert.ToInt32(curAcademYear) + 1;
-            System.Diagnostics.Trace.TraceInformation("End year: " + endYear + ", end month: " + endMonth + ", end date: " +
-                endDateNo);
+            System.Diagnostics.Trace.TraceInformation("End year: " + endYear +
+                                                      ", end month: " + endMonth +
+                                                      ", end date: " + endDateNo);
             if (endDateNo + 7 > 30)
                 breakDates[1] = new DateTime(endYear, endMonth + 1, (endDateNo + 7) % 30);
             else
                 breakDates[1] = new DateTime(endYear, endMonth, endDateNo + 7);
             int totalWeeks = nWeeks(breakDates[0], breakDates[1]);
 
-            int weeksTaken = 0; // Number of non-summer weeks
-            int summerIndex = -1;
-            for (int i = 0; i < weekContent.Length; i++)
+            var weeksTaken = 0; // Number of non-summer weeks
+            var summerIndex = -1;
+            for (var i = 0; i < weekContent.Length; i++)
             {
                 if (weekContent[i].Key == "SUMMER")
                     summerIndex = i;
@@ -220,20 +246,21 @@ namespace UCLA_Student_Planner
                 }
                 weeksTaken += weekContent[i].Value;
             }
-            // Calculate number of weeks of summer by taking difference of total number of weeks and non-summer weeks
+            // Calculate number of weeks of summer by taking difference of total
+            // number of weeks and non-summer weeks.
             weekContent[summerIndex] = new KeyValuePair<string, int>(weekContent[summerIndex].Key, totalWeeks - weeksTaken);
 
             /* Load week content (rotated text of planner) into hidden field. */
-            for (int i = 0; i < weekContent.Length; i++)
+            for (var i = 0; i < weekContent.Length; i++)
             {
                 if (weekContent[i].Value == 10)
                 {
-                    for (int j = 1; j <= 10; j++)
+                    for (var j = 1; j <= 10; j++)
                         weeks.Value += weekContent[i].Key + j.ToString() + "|";
                 }
                 else
                 {
-                    for (int j = 1; j <= weekContent[i].Value; j++)
+                    for (var j = 1; j <= weekContent[i].Value; j++)
                         weeks.Value += weekContent[i].Key + "|";
                 }
             }
@@ -283,18 +310,18 @@ namespace UCLA_Student_Planner
                     curAcademYear = (Convert.ToInt32(curAcademYear) - 1).ToString();
                     break;
                 case "9": // ASSUMPTION: Academic year always starts in September
-                    WebClient client = new WebClient();
+                    var client = new WebClient();
                     string reply = client.DownloadString(UCLA_CALENDAR_PAGE);
-                    string defYearPattern = 
+                    var defYearPattern = 
                         "<li\\s+class=\"active\"><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>(\\d+)-\\d+</a></li>";
-                    Regex rgxDefYear = new Regex(defYearPattern);
+                    var rgxDefYear = new Regex(defYearPattern);
                     string defaultYear = rgxDefYear.Match(reply).Groups[3].Value;
-                    string yearPattern = 
+                    var yearPattern = 
                         "<li\\s+(class=\"active\")?><a href=\"#(.+)\"\\s+(data-toggle=\"tab\")?>" + year + "-\\d+</a></li>";
-                    Regex rgxYear = new Regex(yearPattern);
+                    var rgxYear = new Regex(yearPattern);
                     string id = rgxYear.Match(reply).Groups[2].Value;
 
-                    string divPattern = 
+                    var divPattern = 
                         "<div\\s+class=\".+\"\\s+id=\"" + id + "\">\\s*<div\\s+class=\".+\">\\s*" +
                         "<table\\s+class=\"table\">\\s*" +
                         "<tbody>\\s*" +
@@ -304,9 +331,9 @@ namespace UCLA_Student_Planner
                         "</div>\\s*</div>";
                     string content = Regex.Match(reply, divPattern, RegexOptions.Singleline).Groups[1].Value;
 
-                    string startPattern =
+                    var startPattern =
                         "<td>\\s*Quarter begins.+September\\s+(\\d+)\\s*</td>";
-                    Regex rgxStart = new Regex(startPattern);
+                    var rgxStart = new Regex(startPattern);
                     string dayNum = Regex.Match(content, startPattern, RegexOptions.Singleline).Groups[1].Value;
 
                     string now = DateTime.Now.Date.ToString("d"); // Format: mm/dd/yyyy
@@ -317,8 +344,8 @@ namespace UCLA_Student_Planner
                     // Compare today's date with date of Fall Quarter beginning
                     int curDate = Convert.ToInt32(parsedDate);
                     int schoolStartDate = Convert.ToInt32(dayNum);
-                    System.Diagnostics.Trace.TraceInformation("School start date: " + schoolStartDate + ", current date: " +
-                        curDate);
+                    System.Diagnostics.Trace.TraceInformation("School start date: " + schoolStartDate +
+                                                              ", current date: " + curDate);
                     if (curDate < schoolStartDate)
                     {
                         curAcademYear = defaultYear;
@@ -361,11 +388,11 @@ namespace UCLA_Student_Planner
             
             try
             {
-                SqlConnection con =
+                var con =
                     new SqlConnection(ConfigurationManager.ConnectionStrings["AppHConnection"].ConnectionString);
                 con.Open();
 
-                using (SqlCommand cmd = 
+                using (var cmd = 
                     new SqlCommand("SELECT [Date of Entry], Entry FROM DayEntries WHERE [User ID] = @userid;", con))
                 {
                     cmd.Parameters.AddWithValue("@userid", userID);
@@ -395,7 +422,7 @@ namespace UCLA_Student_Planner
             }
             catch(Exception ex)
             {
-                string msg = "loadDayEntries() Error: ";
+                var msg = "loadDayEntries() Error: ";
                 msg += ex.Message;
                 System.Diagnostics.Debug.WriteLine(msg);
             }
@@ -407,11 +434,11 @@ namespace UCLA_Student_Planner
             
             try
             {
-                SqlConnection con =
+                var con =
                     new SqlConnection(ConfigurationManager.ConnectionStrings["AppHConnection"].ConnectionString);
                 con.Open();
 
-                using (SqlCommand cmd =
+                using (var cmd =
                     new SqlCommand("SELECT [Week of Entry], Entry FROM WeekEntries WHERE [User ID] = @userid;", con))
                 {
                     cmd.Parameters.AddWithValue("@userid", userID);
@@ -430,7 +457,7 @@ namespace UCLA_Student_Planner
             }
             catch (Exception ex)
             {
-                string msg = "loadWeekEntries() Error: ";
+                var msg = "loadWeekEntries() Error: ";
                 msg += ex.Message;
                 System.Diagnostics.Debug.WriteLine(msg);
             }
