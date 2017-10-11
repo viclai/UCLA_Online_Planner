@@ -1,1 +1,6 @@
 UCLA_Student_Planner.v12.suo
+bin/
+obj/
+.vs/
+**/packages/*
+
